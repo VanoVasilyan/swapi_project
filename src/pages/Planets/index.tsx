@@ -3,6 +3,7 @@ import { usePlanets } from './usePlanets';
 import SinglePlanet from '../../components/SinglePlanet';
 import Loading from '../../components/Loading';
 import Pagination from '../../components/Pagination';
+import Filter from '../../components/Filter';
 import * as SC from './styles';
 
 const Planets: FC = () => {
@@ -11,7 +12,7 @@ const Planets: FC = () => {
         isLoading,
         results,
         previous,
-        climates,
+        filterItems,
         nextPageLoading,
         previousPageLoading,
         nextPage,
@@ -21,27 +22,22 @@ const Planets: FC = () => {
 
     if (isLoading || nextPageLoading || previousPageLoading) {
         return <Loading $top='30%' $left='50%' $width='80px' $height='80px' />
-    }
+    };
 
     return (
         <SC.StyledPlanetsContainer>
-            <SC.StyledPlanetsPageMainBlock>
-                {Array.isArray(results) && !!results?.length ? (
-                    results.map(item => (
-                        <SinglePlanet key={item.name} {...item} />
-                    ))
-                    /* {!!climates.length && (
-                    <>
-                        <select onChange={handleSelectChange}>
-                            <option hidden>Climates</option>
-                            {climates.map(({ climate }: { climate: string }) => (
-                                <option key={climate} value={climate}>{climate}</option>
-                            ))}
-                        </select>
-                    </>
-                )} */
-                ) : <div>Nothing found !!!</div>}
-            </SC.StyledPlanetsPageMainBlock>
+            <SC.StyledPlanetsInnerContainer>
+                <SC.StyledFilterWrapper>
+                    {filterItems.map(({ id, title, items }) => (<Filter key={id} title={title} data={items} onChange={(e) => handleSelectChange(e, title)} />))}
+                </SC.StyledFilterWrapper>
+                <SC.StyledPlanetsPageMainBlock>
+                    {Array.isArray(results) && !!results?.length ? (
+                        results.map(item => (
+                            <SinglePlanet key={item.name} {...item} />
+                        ))
+                    ) : <div>Nothing found !!!</div>}
+                </SC.StyledPlanetsPageMainBlock>
+            </SC.StyledPlanetsInnerContainer>
             <Pagination previous={previous} next={next} nextPage={nextPage} previousPage={previousPage} />
         </SC.StyledPlanetsContainer>
     )
