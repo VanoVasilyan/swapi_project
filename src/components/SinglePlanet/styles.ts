@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 
 export const StyledSinglePlanetContainer = styled.div`
+  width: 100%;
+  max-width: 350px;
   border: 2px solid #e0e0e0;
   padding: 20px;
   border-radius: 10px;
-  width: 350px;
   margin-bottom: 20px;
   background-color: #f5f5f5;
 `;
