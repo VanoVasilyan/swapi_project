@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { usePlanets } from './usePlanets';
 import SinglePlanet from '../../components/SinglePlanet';
 import Loading from '../../components/Loading';
+import NoResult from '../../components/NoResult';
 import Pagination from '../../components/Pagination';
 import Filter from '../../components/Filter';
 import * as SC from './styles';
@@ -10,7 +11,7 @@ const Planets: FC = () => {
     const {
         next,
         isLoading,
-        results,
+        finalResults,
         previous,
         filterItems,
         nextPageLoading,
@@ -31,14 +32,14 @@ const Planets: FC = () => {
                     {filterItems.map(({ id, title, items }) => (<Filter key={id} title={title} data={items} onChange={(e) => handleSelectChange(e, title)} />))}
                 </SC.StyledFilterWrapper>
                 <SC.StyledPlanetsPageMainBlock>
-                    {Array.isArray(results) && !!results?.length ? (
-                        results.map(item => (
-                            <SinglePlanet key={item.name} {...item} />
+                    {Array.isArray(finalResults) && !!finalResults?.length ? (
+                        finalResults.map((result, ind) => (
+                            <SinglePlanet key={ind} {...result} />
                         ))
-                    ) : <div>Nothing found !!!</div>}
+                    ) : <NoResult text='Nothing found, please change filters.' />}
                 </SC.StyledPlanetsPageMainBlock>
             </SC.StyledPlanetsInnerContainer>
-            <Pagination previous={previous} next={next} nextPage={nextPage} previousPage={previousPage} />
+            {Array.isArray(finalResults) && !!finalResults?.length && <Pagination previous={previous} next={next} nextPage={nextPage} previousPage={previousPage} />}
         </SC.StyledPlanetsContainer>
     )
 };
