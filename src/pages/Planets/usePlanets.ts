@@ -1,8 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useLazyGetAllPlanetsQuery, usePlanetsNextPageMutation, usePlanetsPreviousPageMutation } from '../../store/services/planets';
 import { usePlanetsAction, usePlanetsSelector } from '../../store/slices/planets';
+import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
+import { TSinglePlanet } from '../../components/SinglePlanet/types';
 
 export const usePlanets = () => {
+    const { pathname } = useLocation();
     const [refetch, { data, isLoading }] = useLazyGetAllPlanetsQuery();
     const { previous, next, results } = usePlanetsSelector();
     const { setPlanets } = usePlanetsAction();
@@ -44,6 +48,35 @@ export const usePlanets = () => {
         setSelectedFilters([...updatedFilters, { [titleToLowerCase]: event.target.value }]);
     };
 
+    const filterItems = useMemo(() => ([
+        {
+            id: 1,
+            title: 'Climate',
+            items: climate
+        },
+        {
+            id: 2,
+            title: 'Gravity',
+            items: gravity
+        },
+    ]), [climate, gravity]);
+
+    const finalResults = useMemo(() => {
+        return Array.isArray(results) && results.map(result => ({
+            name: result.name,
+            rotationPeriod: result.rotation_period,
+            orbitalPeriod: result.orbital_period,
+            diameter: result.diameter,
+            climate: result.climate,
+            gravity: result.gravity,
+            terrain: result.terrain,
+            surfaceWater: result.surface_water,
+            population: result.population,
+            residents: result.residents,
+            Films: result.films
+        })).map(removeObjectEmptyProperties).filter(item => Object.keys(item).length > 1) as TSinglePlanet[]
+    }, [results]);
+
     useEffect(() => {
         if (selectedFilters.length > 0 && data?.results) {
             const filteredResults = data.results.filter((planet: any) =>
@@ -59,28 +92,13 @@ export const usePlanets = () => {
     }, [selectedFilters, data]);
 
     useEffect(() => {
-        if (!Array.isArray(results)) {
-            refetch('')
-        }
-    }, [results]);
-
-    const filterItems = useMemo(() => ([
-        {
-            id: 1,
-            title: 'Climate',
-            items: climate
-        },
-        {
-            id: 2,
-            title: 'Gravity',
-            items: gravity
-        },
-    ]), [climate, gravity]);
+        refetch('');
+    }, [pathname]);
 
     return {
         next,
         isLoading,
-        results,
+        finalResults,
         previous,
         filterItems,
         nextPageLoading,
