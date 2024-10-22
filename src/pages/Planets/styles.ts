@@ -24,8 +24,31 @@ export const StyledPlanetsInnerContainer = styled.div`
     }
 `;
 
+export const StyledFilterContainerTitle = styled.h4`
+    font-size: 20px;
+    margin: 10px 0;
+    color: #333B7E;
+`;
+
 export const StyledFilterWrapper = styled.div`
     display: flex;
     flex-direction: column;
+    min-width: 306px;
     gap: 10px;
+`;
+
+export const StyledFiltersHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+export const StyledClearFiltersButton = styled.button`
+    color: red;
+    font-size: 15px;
+    font-weight: 500;
+    outline: none;
+    border: none;
+    background: none;
+    cursor: pointer;
 `;

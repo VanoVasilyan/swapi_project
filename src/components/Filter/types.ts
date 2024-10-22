@@ -1,5 +1,5 @@
 export interface IFilter {
     title: string;
-    onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+    onChange: (check: string, title: string) => void;
     data: any
 };
