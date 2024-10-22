@@ -1,4 +1,7 @@
 import React, { FC } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { usePlanets } from './usePlanets';
 import SinglePlanet from '../../components/SinglePlanet';
 import Loading from '../../components/Loading';
@@ -10,26 +13,35 @@ import * as SC from './styles';
 const Planets: FC = () => {
     const {
         next,
-        isLoading,
         finalResults,
         previous,
+        isFetching,
         filterItems,
         nextPageLoading,
+        showClearFilters,
         previousPageLoading,
         nextPage,
         previousPage,
+        clearAllFilters,
         handleSelectChange,
     } = usePlanets();
 
-    if (isLoading || nextPageLoading || previousPageLoading) {
-        return <Loading $top='30%' $left='50%' $width='80px' $height='80px' />
+    if (isFetching || nextPageLoading || previousPageLoading) {
+        return <Loading $setMainBlockHeight $top='30%' $left='50%' $width='80px' $height='80px' />
     };
 
     return (
         <SC.StyledPlanetsContainer>
             <SC.StyledPlanetsInnerContainer>
                 <SC.StyledFilterWrapper>
-                    {filterItems.map(({ id, title, items }) => (<Filter key={id} title={title} data={items} onChange={(e) => handleSelectChange(e, title)} />))}
+                    <SC.StyledFiltersHeader>
+                        <SC.StyledFilterContainerTitle><FontAwesomeIcon icon={faFilter} /> Filters</SC.StyledFilterContainerTitle>
+                        {showClearFilters &&
+                            <SC.StyledClearFiltersButton onClick={clearAllFilters}>
+                                <FontAwesomeIcon icon={faXmark} /> Clear filters
+                            </SC.StyledClearFiltersButton>}
+                    </SC.StyledFiltersHeader>
+                    {filterItems.map(({ id, title, items }) => (<Filter key={id} title={title} data={items} onChange={handleSelectChange} />))}
                 </SC.StyledFilterWrapper>
                 <SC.StyledPlanetsPageMainBlock>
                     {Array.isArray(finalResults) && !!finalResults?.length ? (

@@ -2,20 +2,20 @@ import styled from 'styled-components';
 
 export const StyledFilterContainer = styled.div``;
 
-export const StyledFilterSelect = styled.select`
-    outline: none;
-    cursor: pointer;
-    max-width: 206px;
-    padding: 12px 25px;
-    background-color: darkgrey;
-    border: none;
-    border-radius: 8px;
-    color: #FFF;
+export const StyledFilterTitle = styled.p`
+    color: #333333;
     font-weight: bold;
-    cursor: pointer;
 `;
 
-export const StyledFilterOption = styled.option`
-    color: black;
-    background-color: lightgrey;
+export const StyledCheckBoxLable = styled.label<{ $isChecked?: boolean }>`
+    display: flex;
+    gap: 10px;
+    color: ${({ $isChecked }) => $isChecked ? '#50C700' : '#333333'};
+    cursor: pointer;
+    margin-top: 8px;
+    font-weight: 500;
+`;
+
+export const StyledCheckBox = styled.input.attrs({ type: 'checkbox' })`
+    cursor: pointer;
 `;

@@ -1,18 +1,23 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLazyGetAllPlanetsQuery, usePlanetsNextPageMutation, usePlanetsPreviousPageMutation } from '../../store/services/planets';
 import { usePlanetsAction, usePlanetsSelector } from '../../store/slices/planets';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { TSinglePlanet } from '../../components/SinglePlanet/types';
+import { IPlanet } from '../../types/global';
+import { TFilters } from './types';
 
 export const usePlanets = () => {
     const { pathname } = useLocation();
-    const [refetch, { data, isLoading }] = useLazyGetAllPlanetsQuery();
-    const { previous, next, results } = usePlanetsSelector();
-    const { setPlanets } = usePlanetsAction();
+    const [refetch, { data, isFetching }] = useLazyGetAllPlanetsQuery();
     const [nextPage, { isLoading: nextPageLoading }] = usePlanetsNextPageMutation();
     const [previousPage, { isLoading: previousPageLoading }] = usePlanetsPreviousPageMutation();
-    const [selectedFilters, setSelectedFilters] = useState<Array<{ [key: string]: string }>>([]);
+    const { previous, next, results } = usePlanetsSelector();
+    const { setPlanets } = usePlanetsAction();
+    const [selectedFilters, setSelectedFilters] = useState<TFilters>({
+        climate: [],
+        gravity: []
+    });
 
     const climate = useMemo(() => {
         const seen: Record<string, boolean> = {};
@@ -37,16 +42,61 @@ export const usePlanets = () => {
                     return true;
                 }
                 return false;
-            });
+            })
     }, [data]);
 
-    const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>, title: string) => {
+    const handleSelectChange = (check: string, title: string) => {
         const titleToLowerCase = title.toLocaleLowerCase();
-        const updatedFilters = selectedFilters.some(filter => filter.hasOwnProperty(titleToLowerCase))
-            ? selectedFilters.filter(filter => !filter.hasOwnProperty(titleToLowerCase))
-            : selectedFilters;
-        setSelectedFilters([...updatedFilters, { [titleToLowerCase]: event.target.value }]);
+
+        if (selectedFilters[titleToLowerCase as keyof TFilters].includes(check)) {
+            const filteredCheckList = selectedFilters[titleToLowerCase as keyof TFilters].filter(item => item !== check);
+            setSelectedFilters(prev => ({ ...prev, [titleToLowerCase]: filteredCheckList }))
+        } else {
+            setSelectedFilters(prev => ({ ...prev, [titleToLowerCase]: [...selectedFilters[titleToLowerCase as keyof TFilters], check] }))
+        }
     };
+
+    const updateFilters = useCallback(() => {
+        const filteredArray: IPlanet[] = [];
+
+        if (!selectedFilters.climate.length && !selectedFilters.gravity.length && data?.results) {
+            setPlanets(data.results);
+            return
+        }
+        if (selectedFilters.climate.length || selectedFilters.gravity.length) {
+            if (selectedFilters.climate.length === 1 && selectedFilters.gravity.length === 1) {
+                data?.results.forEach((element: IPlanet) => {
+                    if (element.climate === selectedFilters.climate[0] && element.gravity === selectedFilters.gravity[0]) {
+                        filteredArray.push(element)
+                    }
+                });
+            } else if ((selectedFilters.climate.length > 1 && selectedFilters.gravity.length) || (selectedFilters.gravity.length > 1 && selectedFilters.climate.length)) {
+                setPlanets([]);
+            } else if (selectedFilters.climate.length) {
+                selectedFilters.climate.forEach(item => {
+                    if (data?.results) {
+                        data?.results.forEach((element: IPlanet) => {
+                            if (element.climate === item) {
+                                filteredArray.push(element)
+                            }
+                        });
+                    }
+                })
+            } else if (selectedFilters.gravity.length) {
+                selectedFilters.gravity.forEach(item => {
+                    if (data?.results) {
+                        data?.results.forEach((element: IPlanet) => {
+                            if (element.gravity === item) {
+                                filteredArray.push(element)
+                            }
+                        });
+                    }
+                })
+            }
+        }
+        setPlanets(filteredArray);
+    }, [data?.results, selectedFilters, setPlanets]);
+
 
     const filterItems = useMemo(() => ([
         {
@@ -77,19 +127,21 @@ export const usePlanets = () => {
         })).map(removeObjectEmptyProperties).filter(item => Object.keys(item).length > 1) as TSinglePlanet[]
     }, [results]);
 
+    const showClearFilters = useMemo(() => {
+        return Boolean(selectedFilters.climate.length || selectedFilters.gravity.length)
+    }, [selectedFilters]);
+
+    const clearAllFilters = useCallback(() => {
+        setSelectedFilters({
+            climate: [],
+            gravity: []
+        });
+        refetch('');
+    }, [refetch]);
+
     useEffect(() => {
-        if (selectedFilters.length > 0 && data?.results) {
-            const filteredResults = data.results.filter((planet: any) =>
-                selectedFilters.every(filter => {
-                    const [key, value] = Object.entries(filter)[0];
-                    return planet[key] === value;
-                })
-            );
-            setPlanets(filteredResults);
-        } else if (data?.results) {
-            setPlanets(data.results);
-        }
-    }, [selectedFilters, data]);
+        updateFilters();
+    }, [selectedFilters]);
 
     useEffect(() => {
         refetch('');
@@ -97,14 +149,16 @@ export const usePlanets = () => {
 
     return {
         next,
-        isLoading,
         finalResults,
         previous,
         filterItems,
+        isFetching,
         nextPageLoading,
+        showClearFilters,
         previousPageLoading,
         nextPage,
         previousPage,
+        clearAllFilters,
         handleSelectChange,
     }
 };

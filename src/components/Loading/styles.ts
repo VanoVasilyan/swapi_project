@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components';
 
-export const StyledCircleMainBlock = styled.div`
+export const StyledCircleMainBlock = styled.div<{ $setMainBlockHeight?: boolean }>`
     position: relative;
-    height: 102vh;
+    ${({ $setMainBlockHeight }) => $setMainBlockHeight && css`height: 102vh;`}
 `
 
 export const StyledCircleContainer = styled.div<{ $top?: string, $left?: string, $width?: string, $height?: string }>`

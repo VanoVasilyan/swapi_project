@@ -5,12 +5,12 @@ import * as SC from './styles';
 const Filter: FC<IFilter> = ({ title, onChange, data }) => {
     return (
         <SC.StyledFilterContainer>
-            <SC.StyledFilterSelect onChange={onChange}>
-                <SC.StyledFilterOption hidden>{title}</SC.StyledFilterOption>
-                {data.map((item: string) => (
-                    <SC.StyledFilterOption key={item} value={item}>{item}</SC.StyledFilterOption>
-                ))}
-            </SC.StyledFilterSelect>
+            <SC.StyledFilterTitle>{title}</SC.StyledFilterTitle>
+            {data.map((check: string) =>
+            (<SC.StyledCheckBoxLable key={check}>
+                <SC.StyledCheckBox onChange={() => onChange(check, title)} />{check}
+            </SC.StyledCheckBoxLable>)
+            )}
         </SC.StyledFilterContainer>
     )
 };
