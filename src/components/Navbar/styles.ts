@@ -15,4 +15,10 @@ export const StyledNavLink = styled(Link) <{ $isActive: boolean }>`
     padding: 10px;
     border-radius: 10px;
     font-weight: 600;
+
+    @media (max-width: 326px){
+      padding: 5px;
+      border-radius: 5px; 
+      font-weight: 500;
+    }
 `;

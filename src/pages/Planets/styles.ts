@@ -35,6 +35,10 @@ export const StyledFilterWrapper = styled.div`
     flex-direction: column;
     min-width: 306px;
     gap: 10px;
+
+    @media(max-width: 365px){
+       min-width: auto;
+    }
 `;
 
 export const StyledFiltersHeader = styled.div`
