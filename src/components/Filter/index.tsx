@@ -5,7 +5,7 @@ import * as SC from './styles';
 const Filter: FC<IFilter> = ({ title, onChange, data }) => {
     return (
         <SC.StyledFilterContainer>
-            <SC.StyledFilterTitle>{title}</SC.StyledFilterTitle>
+            <SC.StyledFilterTitle>{title.includes('_') ? title.replace('_',' ') : title}</SC.StyledFilterTitle>
             {data.map((check: string) =>
             (<SC.StyledCheckBoxLable key={check}>
                 <SC.StyledCheckBox onChange={() => onChange(check, title)} />{check}

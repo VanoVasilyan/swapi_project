@@ -10,7 +10,7 @@ export const StyledNavigationBlock = styled.nav`
 
 export const StyledNavLink = styled(Link) <{ $isActive: boolean }>`
     text-decoration: none;
-    background-color: ${({ $isActive }) => $isActive ? '#50C700' : 'darkgrey'};
+    background-color: ${({ $isActive }) => $isActive ? '#F5F5F5' : 'darkgrey'};
     color: ${({ $isActive }) => $isActive ? '#333B7E' : '#FFF'};
     padding: 10px;
     border-radius: 10px;

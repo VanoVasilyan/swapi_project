@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useLazyGetAllPlanetsQuery, usePlanetsNextPageMutation, usePlanetsPreviousPageMutation } from '../../store/services/planets';
 import { usePlanetsAction, usePlanetsSelector } from '../../store/slices/planets';
+import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { TSinglePlanet } from '../../components/SinglePlanet/types';
 import { IPlanet } from '../../types/global';
@@ -12,6 +13,8 @@ export const usePlanets = () => {
     const [refetch, { data, isFetching }] = useLazyGetAllPlanetsQuery();
     const [nextPage, { isLoading: nextPageLoading }] = usePlanetsNextPageMutation();
     const [previousPage, { isLoading: previousPageLoading }] = usePlanetsPreviousPageMutation();
+    const { showFilters } = useShowFiltersSelector();
+    const { setShowFilters } = useShowFiltersAction();
     const { previous, next, results } = usePlanetsSelector();
     const { setPlanets } = usePlanetsAction();
     const [selectedFilters, setSelectedFilters] = useState<TFilters>({
@@ -139,12 +142,20 @@ export const usePlanets = () => {
         refetch('');
     }, [refetch]);
 
+    const goBack = useCallback(() => {
+        if (data?.results) {
+            setPlanets(data.results);
+            setShowFilters(true);
+        }
+    }, [data?.results, setPlanets, setShowFilters]);
+
     useEffect(() => {
         updateFilters();
     }, [selectedFilters]);
 
     useEffect(() => {
         refetch('');
+        setShowFilters(true);
     }, [pathname]);
 
     return {
@@ -153,9 +164,11 @@ export const usePlanets = () => {
         previous,
         filterItems,
         isFetching,
+        showFilters,
         nextPageLoading,
         showClearFilters,
         previousPageLoading,
+        goBack,
         nextPage,
         previousPage,
         clearAllFilters,

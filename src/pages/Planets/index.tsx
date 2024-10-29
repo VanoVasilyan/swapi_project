@@ -17,9 +17,11 @@ const Planets: FC = () => {
         previous,
         isFetching,
         filterItems,
+        showFilters,
         nextPageLoading,
         showClearFilters,
         previousPageLoading,
+        goBack,
         nextPage,
         previousPage,
         clearAllFilters,
@@ -33,7 +35,7 @@ const Planets: FC = () => {
     return (
         <SC.StyledPlanetsContainer>
             <SC.StyledPlanetsInnerContainer>
-                <SC.StyledFilterWrapper>
+                {showFilters && <SC.StyledFilterWrapper>
                     <SC.StyledFiltersHeader>
                         <SC.StyledFilterContainerTitle><FontAwesomeIcon icon={faFilter} /> Filters</SC.StyledFilterContainerTitle>
                         {showClearFilters &&
@@ -42,16 +44,16 @@ const Planets: FC = () => {
                             </SC.StyledClearFiltersButton>}
                     </SC.StyledFiltersHeader>
                     {filterItems.map(({ id, title, items }) => (<Filter key={id} title={title} data={items} onChange={handleSelectChange} />))}
-                </SC.StyledFilterWrapper>
+                </SC.StyledFilterWrapper>}
                 <SC.StyledPlanetsPageMainBlock>
                     {Array.isArray(finalResults) && !!finalResults?.length ? (
                         finalResults.map((result, ind) => (
                             <SinglePlanet key={ind} {...result} />
                         ))
-                    ) : <NoResult text='Nothing found, please change filters.' />}
+                    ) : <NoResult text={`Nothing found${!showFilters ? '.' : ', please change filters.'}`} goBack={!showFilters ? goBack : null} />}
                 </SC.StyledPlanetsPageMainBlock>
             </SC.StyledPlanetsInnerContainer>
-            {Array.isArray(finalResults) && !!finalResults?.length && <Pagination previous={previous} next={next} nextPage={nextPage} previousPage={previousPage} />}
+            {(Array.isArray(finalResults) && !!finalResults?.length) && (previous || next) && <Pagination previous={previous} next={next} nextPage={nextPage} previousPage={previousPage} />}
         </SC.StyledPlanetsContainer>
     )
 };
