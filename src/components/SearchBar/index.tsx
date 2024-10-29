@@ -6,11 +6,11 @@ import Loading from '../Loading';
 import * as SC from './styles';
 
 const Search: FC = () => {
-    const { isLoading, searchValue, handleChange } = useSearchBar();
+    const { isLoading, isCharactersLoading, searchValue, handleChange } = useSearchBar();
 
     return (
         <SC.StyledSearchContainer>
-            {isLoading ? <Loading $top='2px' $left='-5px' /> : <FontAwesomeIcon icon={faMagnifyingGlass} />}
+            {isLoading || isCharactersLoading ? <Loading $top='2px' $left='-5px' /> : <FontAwesomeIcon icon={faMagnifyingGlass} />}
             <SC.StyledSearchInput value={searchValue} onChange={handleChange} placeholder='Search ...' />
         </SC.StyledSearchContainer>
     )
