@@ -1,4 +1,4 @@
 export type TFilters = {
-    eye_color: String[];
-    height: String[];
+    eye_color: string[];
+    height: string[];
 };

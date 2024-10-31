@@ -16,7 +16,7 @@ const SingleCharacter: FC<TSingleCharacter> = ({
 }) => {
     return (
         <SC.StyledSingleCharacterContainer>
-             <SC.StyledCharacterName>{name}</SC.StyledCharacterName>
+            <SC.StyledCharacterName>{name}</SC.StyledCharacterName>
             {height && <SC.StyledCharacterDetails> <SC.StyledDetailTitle>Height:</SC.StyledDetailTitle> {height} sm</SC.StyledCharacterDetails>}
             {mass && <SC.StyledCharacterDetails><SC.StyledDetailTitle>Mass:</SC.StyledDetailTitle> {mass}</SC.StyledCharacterDetails>}
             {hair_color && <SC.StyledCharacterDetails><SC.StyledDetailTitle>Hair Color:</SC.StyledDetailTitle> {hair_color}</SC.StyledCharacterDetails>}

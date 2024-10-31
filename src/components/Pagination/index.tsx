@@ -1,21 +1,37 @@
-import React, { FC } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
-import { usePagination } from './usePagination';
-import { IPagination } from './types';
+import React from 'react';
+import ReactPaginate from 'react-paginate';
+import LeftArrowIcon from '../../assets/icons/LeftArrowIcon';
+import RightArrowIcon from '../../assets/icons/RightArrowIcon';
+import { IPaginationProps } from './types';
 import * as SC from './styles';
 
-const Pagination: FC<IPagination> = ({ next, previous, previousPage, nextPage }) => {
-    const { handleNextPage, handlePreviousPage } = usePagination({ next, previous, previousPage, nextPage });
+const Pagination: React.FC<IPaginationProps> = ({
+    pagesCount,
+    currentPage = 1,
+    setCurrentPage,
+}) => {
+    const handleClick = ({ nextSelectedPage }: { nextSelectedPage?: number }): void => {
+        if (nextSelectedPage || nextSelectedPage === 0) {
+            setCurrentPage(nextSelectedPage + 1);
+        }
+    };
 
     return (
-        <SC.StyledPaginationContainer>
-            <SC.StyledPaginationButton disabled={!previous}
-                onClick={handlePreviousPage}><FontAwesomeIcon icon={faChevronLeft} />Previous</SC.StyledPaginationButton>
-            <SC.StyledPaginationButton disabled={!next} onClick={handleNextPage}>Next<FontAwesomeIcon icon={faChevronRight} /></SC.StyledPaginationButton>
-        </SC.StyledPaginationContainer>
-    )
+        <SC.StyledPagination>
+            {pagesCount > 1 && (
+                <ReactPaginate
+                    previousLabel={<LeftArrowIcon />}
+                    nextLabel={<RightArrowIcon />}
+                    breakLabel="..."
+                    pageCount={pagesCount}
+                    initialPage={currentPage - 1}
+                    activeClassName="active"
+                    disabledClassName="disable"
+                    onClick={handleClick}
+                />
+            )}
+        </SC.StyledPagination>
+    );
 };
 
-export default Pagination
+export default Pagination;

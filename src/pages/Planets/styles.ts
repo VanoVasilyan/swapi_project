@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const StyledPlanetsContainer = styled.div``;
+export const StyledPlanetPageWrapper = styled.div``;
+
+export const StyledPlanetsContainer = styled.div`
+    padding: 20px;
+`;
 
 export const StyledPlanetsPageMainBlock = styled.div`
     display: flex;
@@ -27,7 +31,7 @@ export const StyledPlanetsInnerContainer = styled.div`
 export const StyledFilterContainerTitle = styled.h4`
     font-size: 20px;
     margin: 10px 0;
-    color: #333B7E;
+    color: #6D6AE0;
 `;
 
 export const StyledFilterWrapper = styled.div`

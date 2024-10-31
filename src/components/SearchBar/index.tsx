@@ -1,17 +1,14 @@
 import React, { FC } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { useSearchBar } from './useSearchBar';
-import Loading from '../Loading';
+import { TSearch } from './types';
 import * as SC from './styles';
 
-const Search: FC = () => {
-    const { isLoading, isCharactersLoading, searchValue, handleChange } = useSearchBar();
-
+const Search: FC<TSearch> = ({ delayDebounceSearch, searchvalue }) => {
     return (
         <SC.StyledSearchContainer>
-            {isLoading || isCharactersLoading ? <Loading $top='2px' $left='-5px' /> : <FontAwesomeIcon icon={faMagnifyingGlass} />}
-            <SC.StyledSearchInput value={searchValue} onChange={handleChange} placeholder='Search ...' />
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+            <SC.StyledSearchInput value={searchvalue} onChange={delayDebounceSearch} placeholder='Search ...' />
         </SC.StyledSearchContainer>
     )
 };
