@@ -1,4 +1,4 @@
 export type TFilters = {
-    climate: String[];
-    gravity: String[];
+    climate: string[];
+    gravity: string[];
 };

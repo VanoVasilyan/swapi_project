@@ -32,33 +32,6 @@ export const planetsSlice = createSlice({
                 state.results = payload.results
             }
         )
-        builder.addMatcher(
-            planetsApi.endpoints.planetsNextPage.matchFulfilled,
-            (state, { payload }) => {
-                state.count = payload.count
-                state.next = payload.next
-                state.previous = payload.previous
-                state.results = payload.results
-            }
-        )
-        builder.addMatcher(
-            planetsApi.endpoints.planetsPreviousPage.matchFulfilled,
-            (state, { payload }) => {
-                state.count = payload.count
-                state.next = payload.next
-                state.previous = payload.previous
-                state.results = payload.results
-            }
-        )
-        builder.addMatcher(
-            planetsApi.endpoints.searchPlanets.matchFulfilled,
-            (state, { payload }) => {
-                state.count = payload.count
-                state.next = payload.next
-                state.previous = payload.previous
-                state.results = payload.results
-            }
-        )
     }
 });
 

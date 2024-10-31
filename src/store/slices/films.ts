@@ -1,21 +1,21 @@
-import { TCharactersData } from '../../types/characters';
+import { TFilmsData } from '../../types/films';
 import { useDispatch, useSelector } from 'react-redux';
 import { bindActionCreators, createSlice } from '@reduxjs/toolkit';
 import { TStore } from '../../types/store.main';
-import { charactersApi } from '../services/characters';
+import { filmsApi } from '../services/films';
 
-const initialState: TCharactersData = {
+const initialState: TFilmsData = {
     count: null,
     next: null,
     previous: null,
     results: null
 };
 
-export const charactersSlice = createSlice({
-    name: 'charactersSlice',
+export const filmsSlice = createSlice({
+    name: 'filmsSlice',
     initialState,
     reducers: {
-        setCharacters: (state, action) => {
+        setFilms: (state, action) => {
             return {
                 ...state,
                 results: action.payload,
@@ -24,7 +24,7 @@ export const charactersSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addMatcher(
-            charactersApi.endpoints.getAllCharacters.matchFulfilled,
+            filmsApi.endpoints.getAllFilms.matchFulfilled,
             (state, { payload }) => {
                 state.count = payload.count
                 state.next = payload.next
@@ -35,13 +35,13 @@ export const charactersSlice = createSlice({
     }
 });
 
-export default charactersSlice.reducer;
-export const useCharactersAction = () => {
+export default filmsSlice.reducer;
+export const useFilmsAction = () => {
     const dispatch = useDispatch();
 
-    return bindActionCreators({ ...charactersSlice.actions }, dispatch);
+    return bindActionCreators({ ...filmsSlice.actions }, dispatch);
 };
 
-export const useCharactersSelector = () => {
-    return useSelector((state: TStore) => state.characters);
+export const useFilmsSelector = () => {
+    return useSelector((state: TStore) => state.films);
 };

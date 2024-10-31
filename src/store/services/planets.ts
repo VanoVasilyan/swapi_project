@@ -24,32 +24,21 @@ export const planetsApi = createApi({
     reducerPath: 'planetsApi',
     baseQuery: baseQueryWrapper,
     endpoints: (builder) => ({
-        getAllPlanets: builder.query({
-            query: () => ({ url: '/planets/' })
-        }),
-        planetsNextPage: builder.mutation({
-            query: ({ url }) => ({ url })
-        }),
-        planetsPreviousPage: builder.mutation({
-            query: ({ url }) => ({ url })
-        }),
-        searchPlanets: builder.mutation<
-            TBeResponseWithData<IPlanet>,
-            { name: string }
-        >({
-            query({ name }) {
-                return {
-                    url: `/planets?search=${name}`,
-                    method: 'GET',
-                };
+        getAllPlanets: builder.query<TBeResponseWithData<IPlanet>, { searchValue?: string; page?: number }>({
+            query({ searchValue, page }) {
+                let url = '';
+
+                if (searchValue) {
+                    url = `/planets?search=${searchValue}`
+                } else if (page) {
+                    url = `/planets/?page=${page}`
+                } else {
+                    url = '/planets'
+                }
+                return { url };
             },
         }),
     }),
 });
 
-export const {
-    useLazyGetAllPlanetsQuery,
-    usePlanetsNextPageMutation,
-    usePlanetsPreviousPageMutation,
-    useSearchPlanetsMutation
-} = planetsApi;
+export const { useGetAllPlanetsQuery } = planetsApi;

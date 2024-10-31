@@ -1,53 +1,53 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useGetAllCharactersQuery } from '../../store/services/characters';
-import { useCharactersAction, useCharactersSelector } from '../../store/slices/characters';
+import { useGetAllFilmsQuery } from '../../store/services/films';
+import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
+import { useFilmsAction, useFilmsSelector } from '../../store/slices/films';
 import { usePaginate } from '../../hooks/usePaginate';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
-import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
-import { TSingleCharacter } from '../../components/SingleCharacter/types';
-import { ICharacter } from '../../types/global';
+import { TSingleFilm } from '../../components/SingleFilm/types';
+import { IFilm } from '../../types/global';
 import { TFilters } from './types';
 
-export const useCharacters = () => {
+export const useFilms = () => {
     const [searchValue, setSearchValue] = useState('');
-    const [charactersPage, setCharactersPage] = useState(1);
+    const [filmsPage, setFilmsPage] = useState(1);
     const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
-    const { data, isFetching, refetch } = useGetAllCharactersQuery({ searchValue: debouncedSearchValue, page: charactersPage }, {
+    const { data, isFetching, refetch } = useGetAllFilmsQuery({ searchValue: debouncedSearchValue, page: filmsPage }, {
         refetchOnMountOrArgChange: true,
     });
-    const { results } = useCharactersSelector();
     const { showFilters } = useShowFiltersSelector();
     const { setShowFilters } = useShowFiltersAction();
-    const { setCharacters } = useCharactersAction();
+    const { results } = useFilmsSelector();
+    const { setFilms } = useFilmsAction();
     const [selectedFilters, setSelectedFilters] = useState<TFilters>({
-        eye_color: [],
-        height: []
+        release_date: [],
+        producer: []
     });
 
-    const eye_color = useMemo(() => {
+    const releaseDate = useMemo(() => {
         const seen: Record<string, boolean> = {};
         return Array.isArray(data?.results) && data?.results
-            .map((character: { eye_color: string }) => character.eye_color)
-            .filter((eye_color: string | number) => {
-                if (!seen[eye_color] && eye_color !== 'unknown') {
-                    seen[eye_color] = true;
+            .map((film: { release_date: string }) => film.release_date)
+            .filter((release_date: string | number) => {
+                if (!seen[release_date] && release_date !== 'unknown') {
+                    seen[release_date] = true;
+                    return true;
+                }
+                return false;
+            }).map((release_date: string) => release_date.split('-')[0]);
+    }, [data]);
+
+    const producer = useMemo(() => {
+        const seen: Record<string, boolean> = {};
+        return Array.isArray(data?.results) && data?.results
+            .map((film: { producer: string }) => film.producer)
+            .filter((producer: string | number) => {
+                if (!seen[producer] && producer !== 'unknown') {
+                    seen[producer] = true;
                     return true;
                 }
                 return false;
             });
-    }, [data]);
-
-    const height = useMemo(() => {
-        const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results
-            .map((character: { height: string }) => character.height)
-            .filter((height: string | number) => {
-                if (!seen[height] && height !== 'unknown') {
-                    seen[height] = true;
-                    return true;
-                }
-                return false;
-            }).sort((a: string, b: string) => Number(a) - Number(b))
     }, [data]);
 
     const handleSelectChange = (check: string, title: string) => {
@@ -62,36 +62,36 @@ export const useCharacters = () => {
     };
 
     const updateFilters = useCallback(() => {
-        const filteredArray: ICharacter[] = [];
+        const filteredArray: IFilm[] = [];
 
-        if (!selectedFilters.eye_color.length && !selectedFilters.height.length && data?.results) {
-            setCharacters(data.results);
+        if (!selectedFilters.release_date.length && !selectedFilters.producer.length && data?.results) {
+            setFilms(data.results);
             return
         }
-        if (selectedFilters.eye_color.length || selectedFilters.height.length) {
-            if (selectedFilters.eye_color.length === 1 && selectedFilters.height.length === 1 && Array.isArray(data?.results)) {
-                data?.results.forEach((element: ICharacter) => {
-                    if (element.eye_color === selectedFilters.eye_color[0] && element.height === selectedFilters.height[0]) {
+        if (selectedFilters.release_date.length || selectedFilters.producer.length) {
+            if (selectedFilters.release_date.length === 1 && selectedFilters.producer.length === 1 && Array.isArray(data?.results)) {
+                data?.results.forEach((element: IFilm) => {
+                    if (element.release_date.split('-')[0] === selectedFilters.release_date[0] && element.producer === selectedFilters.producer[0]) {
                         filteredArray.push(element)
                     }
                 });
-            } else if ((selectedFilters.eye_color.length > 1 && selectedFilters.height.length) || (selectedFilters.height.length > 1 && selectedFilters.eye_color.length)) {
-                setCharacters([]);
-            } else if (selectedFilters.eye_color.length) {
-                selectedFilters.eye_color.forEach(item => {
+            } else if ((selectedFilters.release_date.length > 1 && selectedFilters.producer.length) || (selectedFilters.producer.length > 1 && selectedFilters.release_date.length)) {
+                setFilms([]);
+            } else if (selectedFilters.release_date.length) {
+                selectedFilters.release_date.forEach(item => {
                     if (data?.results && Array.isArray(data?.results)) {
-                        data?.results.forEach((element: ICharacter) => {
-                            if (element.eye_color === item) {
+                        data?.results.forEach((element: IFilm) => {
+                            if (element.release_date.split('-')[0] === item) {
                                 filteredArray.push(element)
                             }
                         });
                     }
                 })
-            } else if (selectedFilters.height.length) {
-                selectedFilters.height.forEach(item => {
+            } else if (selectedFilters.producer.length) {
+                selectedFilters.producer.forEach(item => {
                     if (data?.results && Array.isArray(data?.results)) {
-                        data?.results.forEach((element: ICharacter) => {
-                            if (element.height === item) {
+                        data?.results.forEach((element: IFilm) => {
+                            if (element.producer === item) {
                                 filteredArray.push(element)
                             }
                         });
@@ -99,45 +99,45 @@ export const useCharacters = () => {
                 })
             }
         }
-        setCharacters(filteredArray);
-    }, [data?.results, selectedFilters, setCharacters]);
+        setFilms(filteredArray);
+    }, [data?.results, selectedFilters, setFilms]);
 
     const filterItems = useMemo(() => ([
         {
             id: 1,
-            title: 'Eye_Color',
-            items: eye_color
+            title: 'Release_Date',
+            items: releaseDate
         },
         {
             id: 2,
-            title: 'Height',
-            items: height
+            title: 'Producer',
+            items: producer
         },
-    ]), [eye_color, height]);
+    ]), [releaseDate, producer]);
 
     const finalResults = useMemo(() => {
         return Array.isArray(results) && results.map(result => ({
-            name: result.name,
-            height: result.height,
-            mass: result.mass,
-            hair_color: result.hair_color,
-            skin_color: result.skin_color,
-            eye_color: result.eye_color,
-            films: result.films,
-            species: result.species,
+            title: result.title,
+            openingCrawl: result.opening_crawl,
+            director: result.director,
+            producer: result.producer,
+            releaseDate: result.release_date,
+            characters: result.characters,
+            planets: result.planets,
+            starships: result.starships,
             vehicles: result.vehicles,
-            starships: result.starships
-        })).map(removeObjectEmptyProperties).filter(item => Object.keys(item).length > 1 && (item.eye_color || item.height)) as TSingleCharacter[]
+            species: result.species,
+        })).map(removeObjectEmptyProperties).filter(item => Object.keys(item).length > 1 && (item.release_date || item.producer)) as TSingleFilm[]
     }, [results]);
 
     const showClearFilters = useMemo(() => {
-        return Boolean(selectedFilters.eye_color.length || selectedFilters.height.length)
+        return Boolean(selectedFilters.release_date.length || selectedFilters.producer.length)
     }, [selectedFilters]);
 
     const clearAllFilters = useCallback(() => {
         setSelectedFilters({
-            eye_color: [],
-            height: []
+            release_date: [],
+            producer: []
         });
         refetch();
     }, [refetch, setSelectedFilters]);
@@ -158,12 +158,12 @@ export const useCharacters = () => {
         refetch,
         true,
         {},
-        charactersPage
+        filmsPage
     );
 
     const handlePageChange = useCallback((page: number) => {
         setPage(page);
-        setCharactersPage(page);
+        setFilmsPage(page);
     }, [setPage]);
 
     useEffect(() => {

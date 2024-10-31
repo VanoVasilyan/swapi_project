@@ -1,21 +1,23 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useLazyGetAllPlanetsQuery, usePlanetsNextPageMutation, usePlanetsPreviousPageMutation } from '../../store/services/planets';
+import { useGetAllPlanetsQuery } from '../../store/services/planets';
 import { usePlanetsAction, usePlanetsSelector } from '../../store/slices/planets';
 import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
+import { usePaginate } from '../../hooks/usePaginate';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { TSinglePlanet } from '../../components/SinglePlanet/types';
 import { IPlanet } from '../../types/global';
 import { TFilters } from './types';
 
 export const usePlanets = () => {
-    const { pathname } = useLocation();
-    const [refetch, { data, isFetching }] = useLazyGetAllPlanetsQuery();
-    const [nextPage, { isLoading: nextPageLoading }] = usePlanetsNextPageMutation();
-    const [previousPage, { isLoading: previousPageLoading }] = usePlanetsPreviousPageMutation();
+    const [searchValue, setSearchValue] = useState('');
+    const [planetsPage, setPlanetsPage] = useState(1);
+    const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+    const { data, isFetching, refetch } = useGetAllPlanetsQuery({ searchValue: debouncedSearchValue, page: planetsPage }, {
+        refetchOnMountOrArgChange: true,
+    });
     const { showFilters } = useShowFiltersSelector();
     const { setShowFilters } = useShowFiltersAction();
-    const { previous, next, results } = usePlanetsSelector();
+    const { results } = usePlanetsSelector();
     const { setPlanets } = usePlanetsAction();
     const [selectedFilters, setSelectedFilters] = useState<TFilters>({
         climate: [],
@@ -24,10 +26,10 @@ export const usePlanets = () => {
 
     const climate = useMemo(() => {
         const seen: Record<string, boolean> = {};
-        return (data?.results ?? [])
+        return Array.isArray(data?.results) && data?.results
             .map((planet: { climate: string }) => planet.climate)
             .filter((climate: string | number) => {
-                if (!seen[climate]) {
+                if (!seen[climate] && climate !== 'unknown') {
                     seen[climate] = true;
                     return true;
                 }
@@ -37,10 +39,10 @@ export const usePlanets = () => {
 
     const gravity = useMemo(() => {
         const seen: Record<string, boolean> = {};
-        return (data?.results ?? [])
+        return Array.isArray(data?.results) && data?.results
             .map((planet: { gravity: string }) => planet.gravity)
             .filter((gravity: string | number) => {
-                if (!seen[gravity]) {
+                if (!seen[gravity] && gravity !== 'unknown') {
                     seen[gravity] = true;
                     return true;
                 }
@@ -67,7 +69,7 @@ export const usePlanets = () => {
             return
         }
         if (selectedFilters.climate.length || selectedFilters.gravity.length) {
-            if (selectedFilters.climate.length === 1 && selectedFilters.gravity.length === 1) {
+            if (selectedFilters.climate.length === 1 && selectedFilters.gravity.length === 1 && Array.isArray(data?.results)) {
                 data?.results.forEach((element: IPlanet) => {
                     if (element.climate === selectedFilters.climate[0] && element.gravity === selectedFilters.gravity[0]) {
                         filteredArray.push(element)
@@ -77,7 +79,7 @@ export const usePlanets = () => {
                 setPlanets([]);
             } else if (selectedFilters.climate.length) {
                 selectedFilters.climate.forEach(item => {
-                    if (data?.results) {
+                    if (data?.results && Array.isArray(data?.results)) {
                         data?.results.forEach((element: IPlanet) => {
                             if (element.climate === item) {
                                 filteredArray.push(element)
@@ -87,7 +89,7 @@ export const usePlanets = () => {
                 })
             } else if (selectedFilters.gravity.length) {
                 selectedFilters.gravity.forEach(item => {
-                    if (data?.results) {
+                    if (data?.results && Array.isArray(data?.results)) {
                         data?.results.forEach((element: IPlanet) => {
                             if (element.gravity === item) {
                                 filteredArray.push(element)
@@ -115,7 +117,7 @@ export const usePlanets = () => {
     ]), [climate, gravity]);
 
     const finalResults = useMemo(() => {
-        return Array.isArray(results) && results.map(result => ({
+        return Array.isArray(results) && results.map((result) => ({
             name: result.name,
             rotationPeriod: result.rotation_period,
             orbitalPeriod: result.orbital_period,
@@ -127,7 +129,7 @@ export const usePlanets = () => {
             population: result.population,
             residents: result.residents,
             Films: result.films
-        })).map(removeObjectEmptyProperties).filter(item => Object.keys(item).length > 1) as TSinglePlanet[]
+        })).map(removeObjectEmptyProperties).filter((item) => Object.keys(item).length > 1 && (item.climate || item.gravity)) as TSinglePlanet[]
     }, [results]);
 
     const showClearFilters = useMemo(() => {
@@ -139,39 +141,66 @@ export const usePlanets = () => {
             climate: [],
             gravity: []
         });
-        refetch('');
-    }, [refetch]);
+        refetch();
+    }, [refetch, setSelectedFilters]);
 
     const goBack = useCallback(() => {
-        if (data?.results) {
-            setPlanets(data.results);
-            setShowFilters(true);
-        }
-    }, [data?.results, setPlanets, setShowFilters]);
+        setDebouncedSearchValue('');
+        setSearchValue('');
+        setShowFilters(true);
+    }, [setShowFilters]);
+
+    const delayDebounceSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(event.target.value);
+    };
+
+    const { page, pageCount, setPage } = usePaginate(
+        data?.count ? data.count : 0,
+        10,
+        refetch,
+        true,
+        {},
+        planetsPage
+    );
+
+    const handlePageChange = useCallback((page: number) => {
+        setPage(page);
+        setPlanetsPage(page);
+    }, [setPage]);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedSearchValue(searchValue);
+        }, 2000);
+
+        return () => clearTimeout(handler);
+    }, [searchValue]);
 
     useEffect(() => {
         updateFilters();
     }, [selectedFilters]);
 
     useEffect(() => {
-        refetch('');
-        setShowFilters(true);
-    }, [pathname]);
+        if (data && Array.isArray(data.results) && !data.results.length) {
+            setShowFilters(false);
+        } else {
+            setShowFilters(true);
+        }
+    }, [data?.results])
 
     return {
-        next,
+        page,
+        pageCount,
         finalResults,
-        previous,
-        filterItems,
         isFetching,
+        filterItems,
         showFilters,
-        nextPageLoading,
         showClearFilters,
-        previousPageLoading,
+        searchValue,
         goBack,
-        nextPage,
-        previousPage,
         clearAllFilters,
+        handlePageChange,
         handleSelectChange,
+        delayDebounceSearch,
     }
 };

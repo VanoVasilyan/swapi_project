@@ -1,8 +1,68 @@
 import React, { FC } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import Header from '../../components/Header';
+import Loading from '../../components/Loading';
+import Filter from '../../components/Filter';
+import NoResult from '../../components/NoResult';
+import Pagination from '../../components/Pagination';
+import SingleFilm from '../../components/SingleFilm';
+import { useFilms } from './useFilms';
+import * as SC from './styles';
 
 const Films: FC = () => {
+    const {
+        page,
+        pageCount,
+        finalResults,
+        isFetching,
+        filterItems,
+        showFilters,
+        showClearFilters,
+        searchValue,
+        goBack,
+        clearAllFilters,
+        handlePageChange,
+        handleSelectChange,
+        delayDebounceSearch,
+    } = useFilms();
+
+    if (isFetching) {
+        return <Loading $setMainBlockHeight $top='30%' $left='50%' $width='80px' $height='80px' />
+    };
+
     return (
-        <div>Films</div>
+        <SC.StyledFilmPageWrapper>
+            <Header searchvalue={searchValue} delayDebounceSearch={delayDebounceSearch} />
+            <SC.StyledFilmsContainer>
+                <SC.StyledFilmsInnerContainer>
+                    {showFilters && <SC.StyledFilterWrapper>
+                        <SC.StyledFiltersHeader>
+                            <SC.StyledFilterContainerTitle><FontAwesomeIcon icon={faFilter} /> Filters</SC.StyledFilterContainerTitle>
+                            {showClearFilters &&
+                                <SC.StyledClearFiltersButton onClick={clearAllFilters}>
+                                    <FontAwesomeIcon icon={faXmark} /> Clear filters
+                                </SC.StyledClearFiltersButton>}
+                        </SC.StyledFiltersHeader>
+                        {filterItems.map(({ id, title, items }) => (<Filter key={id} title={title} data={items} onChange={handleSelectChange} />))}
+                    </SC.StyledFilterWrapper>}
+                    <SC.StyledFilmsPageMainBlock>
+                        {Array.isArray(finalResults) && !!finalResults?.length ? (
+                            finalResults.map((result, ind) => (
+                                <SingleFilm key={ind} {...result} />
+                            ))
+                        ) : <NoResult text={`Nothing found${!showFilters ? '.' : ', please change filters.'}`} goBack={!showFilters ? goBack : null} />}
+                    </SC.StyledFilmsPageMainBlock>
+                </SC.StyledFilmsInnerContainer>
+                {Array.isArray(finalResults) && !!finalResults?.length &&
+                    <Pagination
+                        pagesCount={pageCount}
+                        currentPage={page}
+                        setCurrentPage={handlePageChange}
+                    />}
+            </SC.StyledFilmsContainer>
+        </SC.StyledFilmPageWrapper>
     )
 };
 

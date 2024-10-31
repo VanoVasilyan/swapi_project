@@ -5,7 +5,7 @@ import {
     createApi,
     fetchBaseQuery,
 } from '@reduxjs/toolkit/query/react';
-import { ICharacter, TBeResponseWithData } from '../../types/global';
+import { IFilm, TBeResponseWithData } from '../../types/global';
 
 const baseQuery = fetchBaseQuery({
     baseUrl: process.env.REACT_APP_PUBLIC_URL,
@@ -20,20 +20,20 @@ export const baseQueryWrapper: BaseQueryFn<
     return result;
 };
 
-export const charactersApi = createApi({
-    reducerPath: 'charactersApi',
+export const filmsApi = createApi({
+    reducerPath: 'filmsApi',
     baseQuery: baseQueryWrapper,
     endpoints: (builder) => ({
-        getAllCharacters: builder.query<TBeResponseWithData<ICharacter>, { searchValue?: string; page?: number }>({
+        getAllFilms: builder.query<TBeResponseWithData<IFilm>, { searchValue?: string; page?: number }>({
             query({ searchValue, page }) {
                 let url = '';
 
                 if (searchValue) {
-                    url = `/people?search=${searchValue}`
+                    url = `/films?search=${searchValue}`
                 } else if (page) {
-                    url = `/people/?page=${page}`
+                    url = `/films/?page=${page}`
                 } else {
-                    url = '/people'
+                    url = '/films'
                 }
                 return { url };
             },
@@ -41,4 +41,4 @@ export const charactersApi = createApi({
     }),
 });
 
-export const { useGetAllCharactersQuery } = charactersApi;
+export const { useGetAllFilmsQuery } = filmsApi;
