@@ -3,11 +3,12 @@ import App from '../components/App';
 import Characters from '../pages/Characters';
 import Films from '../pages/Films';
 import Planets from '../pages/Planets';
+import NoResult from '../components/NoResult';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    errorElement: <div>Err</div>,
+    errorElement: <NoResult text={'Nothing Found'} goBack={() => { }} errorFromRouter={'/'} />,
     element: <App />,
     children: [
       {
@@ -16,17 +17,14 @@ export const router = createBrowserRouter([
       },
       {
         path: 'planets',
-        errorElement: <div>Err</div>,
         element: <Planets />,
       },
       {
         path: 'characters',
-        errorElement: <div>Err</div>,
         element: <Characters />,
       },
       {
         path: 'films',
-        errorElement: <div>Err</div>,
         element: <Films />,
       },
     ],

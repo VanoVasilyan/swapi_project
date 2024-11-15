@@ -1,7 +1,7 @@
-export interface ILoading {
-    $top?: string;
-    $left?: string;
-    $width?: string;
-    $height?: string;
-    $setMainBlockHeight?: boolean
-};
+export type ILoading  = Partial<{
+    $top: string;
+    $left: string;
+    $width: string;
+    $height: string;
+    $setMainBlockHeight: boolean
+}>;
