@@ -15,7 +15,7 @@ export const StyledFilmTitle = styled.h1`
   color: #333;
 `;
 
-export const StyledFilmDetails = styled.p`
+export const StyledFilmDetails = styled.div`
   font-size: 16px;
   color: #666;
   margin: 5px 0;
@@ -49,3 +49,13 @@ export const StyledShowMoreButton = styled.button`
     color: #333B7E;
     font-weight: 600;
 `;
+
+export const StyledStarship = styled.div``;
+
+export const StyledCharacter = styled.div``;
+
+export const StyledPlanet = styled.div``;
+
+export const StyledVehicle = styled.div``;
+
+export const StyledSpecies = styled.div``;

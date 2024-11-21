@@ -5,8 +5,8 @@ export type TSingleCharacter = Partial<{
     hairColor: string,
     skinColor: string,
     eyeColor: string,
-    films: number,
-    species: number,
-    vehicles: number,
-    starships: number
+    films: string[],
+    species: string[],
+    vehicles: string[],
+    starships: string[]
 }>;

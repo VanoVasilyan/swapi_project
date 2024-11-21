@@ -15,7 +15,7 @@ export const StyledCharacterName = styled.h1`
   color: #333;
 `;
 
-export const StyledCharacterDetails = styled.p`
+export const StyledCharacterDetails = styled.div`
   font-size: 16px;
   color: #666;
   margin: 5px 0;
@@ -25,3 +25,11 @@ export const StyledDetailTitle = styled.span`
   font-weight: bold;
   color: #000;
 `;
+
+export const StyledSpecies = styled.div``;
+
+export const StyledVehicle = styled.div``;
+
+export const StyledStarship = styled.div``;
+
+export const StyledFilm = styled.div``;
