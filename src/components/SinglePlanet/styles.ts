@@ -15,7 +15,7 @@ export const StyledPlanetName = styled.h1`
   color: #333;
 `;
 
-export const StyledPlanetDetails = styled.p`
+export const StyledPlanetDetails = styled.div`
   font-size: 16px;
   color: #666;
   margin: 5px 0;
@@ -25,3 +25,7 @@ export const StyledDetailTitle = styled.span`
   font-weight: bold;
   color: #000;
 `;
+
+export const StyledFilm = styled.div``;
+
+export const StyledResidence = styled.div``;

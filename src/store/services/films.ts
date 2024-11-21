@@ -38,7 +38,12 @@ export const filmsApi = createApi({
                 return { url };
             },
         }),
+        getSingleFilm: builder.query<TBeResponseWithData<IFilm>, { id: string }>({
+            query({ id }) {
+                return `/films/${id}`
+            }
+        })
     }),
 });
 
-export const { useGetAllFilmsQuery } = filmsApi;
+export const { useGetAllFilmsQuery, useLazyGetSingleFilmQuery } = filmsApi;

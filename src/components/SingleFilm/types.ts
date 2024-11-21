@@ -4,9 +4,9 @@ export type TSingleFilm = Partial<{
     director: string,
     producer: string,
     releaseDate: string,
-    characters: number,
-    planets: number,
-    starships: number,
-    vehicles: number,
-    species: number
+    characters: string[],
+    planets: string[],
+    starships: string[],
+    vehicles: string[],
+    species: string[]
 }>;

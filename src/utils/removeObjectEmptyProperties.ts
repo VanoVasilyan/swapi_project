@@ -6,7 +6,7 @@ export const removeObjectEmptyProperties = (item: Record<string, unknown>) => {
             finalResult[key] = 'New Planet'
         }
         if (value !== '0' && value !== 'unknown' && !(Array.isArray(value) && !value.length)) {
-            finalResult[key] = Array.isArray(value) ? value.length : value
+            finalResult[key] = value
         }
     };
     return finalResult

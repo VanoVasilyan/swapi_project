@@ -128,7 +128,7 @@ export const usePlanets = () => {
             surfaceWater: result.surface_water,
             population: result.population,
             residents: result.residents,
-            Films: result.films
+            films: result.films
         })).map(removeObjectEmptyProperties).filter((item) => Object.keys(item).length > 1 && (item.climate || item.gravity)) as TSinglePlanet[]
     }, [results]);
 
@@ -186,7 +186,7 @@ export const usePlanets = () => {
         } else {
             setShowFilters(true);
         }
-    }, [data?.results])
+    }, [data?.results]);
 
     return {
         page,

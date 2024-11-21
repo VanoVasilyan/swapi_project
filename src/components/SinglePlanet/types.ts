@@ -7,7 +7,7 @@ export type TSinglePlanet = Partial<{
     climate: string,
     surfaceWater: string,
     terrain: string,
-    residents: number,
-    films: number
+    residents: string[],
+    films: string[],
     population: string,
 }>;

@@ -38,7 +38,12 @@ export const planetsApi = createApi({
                 return { url };
             },
         }),
+        getSinglePlanet: builder.query<TBeResponseWithData<IPlanet>, { id: string }>({
+            query({ id }) {
+                return `/planets/${id}`
+            }
+        })
     }),
 });
 
-export const { useGetAllPlanetsQuery } = planetsApi;
+export const { useGetAllPlanetsQuery, useLazyGetSinglePlanetQuery } = planetsApi;
