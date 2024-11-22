@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const StyledHeaderMainBlock = styled.div`
+export const StyledHeaderMainBlock = styled.header`
     display: flex;
     justify-content: space-between;
     position: sticky;

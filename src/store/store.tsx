@@ -14,10 +14,10 @@ const combined = combineReducers({
     characters: charactersReducer,
     planets: planetsReducer,
     showFilters: filtersReducer,
-    films: filmsReducer
+    films: filmsReducer,
 });
 
-const masterReducer = (state: any, action: any) => {
+const masterReducer = (state: ReturnType<typeof combined> | undefined, action: Parameters<typeof combined>[1]): ReturnType<typeof combined> => {
     return combined(state, action);
 };
 
@@ -28,6 +28,7 @@ export const store = configureStore({
             .concat(planetsApi.middleware)
             .concat(charactersApi.middleware)
             .concat(filmsApi.middleware)
-})
+});
 
-export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
+export type AppState = ReturnType<typeof store.getState>;
