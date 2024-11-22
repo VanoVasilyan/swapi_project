@@ -24,7 +24,8 @@ const SingleCharacter: FC<TSingleCharacter> = ({
         filmTitlesMemoized,
         speciesNamesMemoized,
         vehicleNamesMemoized,
-        starshipNamesMemoized
+        starshipNamesMemoized,
+        getFilmsSpeciesVehiclesStarships
     } = useSingleCharacter(films as string[], species as string[], vehicles as string[], starships as string[]);
 
     return (
@@ -35,25 +36,29 @@ const SingleCharacter: FC<TSingleCharacter> = ({
             {hairColor && <SC.StyledCharacterDetails><SC.StyledDetailTitle>Hair Color:</SC.StyledDetailTitle> {hairColor}</SC.StyledCharacterDetails>}
             {skinColor && <SC.StyledCharacterDetails><SC.StyledDetailTitle>Skin Color:</SC.StyledDetailTitle> {skinColor}</SC.StyledCharacterDetails>}
             {eyeColor && <SC.StyledCharacterDetails><SC.StyledDetailTitle>Eye Color:</SC.StyledDetailTitle> {eyeColor}</SC.StyledCharacterDetails>}
-            {isSpeciesFetching ? <Loading /> : speciesNamesMemoized.length ? (
+            {(!filmTitlesMemoized.length && !speciesNamesMemoized.length && !starshipNamesMemoized.length && !vehicleNamesMemoized.length) && 
+            <SC.StyledGetMoreInfoButton $isLoading={isFetching || isSpeciesFetching || isStarshipsFetching || isVehiclesFetching} onClick={getFilmsSpeciesVehiclesStarships}>{isFetching || isSpeciesFetching || isStarshipsFetching || isVehiclesFetching ?
+                <Loading $left='38px' $top='-8px' /> : 'Get More Info'
+            }</SC.StyledGetMoreInfoButton>}
+            {speciesNamesMemoized.length ? (
                 <SC.StyledCharacterDetails>
                     <SC.StyledDetailTitle>Species:</SC.StyledDetailTitle>
                     {speciesNamesMemoized.map(species => <SC.StyledSpecies key={species}>{species}</SC.StyledSpecies>)}
                 </SC.StyledCharacterDetails>
             ) : null}
-            {isVehiclesFetching ? <Loading /> : vehicleNamesMemoized.length ? (
+            {vehicleNamesMemoized.length ? (
                 <SC.StyledCharacterDetails>
                     <SC.StyledDetailTitle>Vehicles:</SC.StyledDetailTitle>
                     {vehicleNamesMemoized.map(vehicle => <SC.StyledVehicle key={vehicle}>{vehicle}</SC.StyledVehicle>)}
                 </SC.StyledCharacterDetails>
             ) : null}
-            {isStarshipsFetching ? <Loading /> : starshipNamesMemoized.length ? (
+            {starshipNamesMemoized.length ? (
                 <SC.StyledCharacterDetails>
                     <SC.StyledDetailTitle>Starships:</SC.StyledDetailTitle>
                     {starshipNamesMemoized.map(starship => <SC.StyledStarship key={starship}>{starship}</SC.StyledStarship>)}
                 </SC.StyledCharacterDetails>
             ) : null}
-            {isFetching ? <Loading /> : filmTitlesMemoized.length ? (
+            {filmTitlesMemoized.length ? (
                 <SC.StyledCharacterDetails>
                     <SC.StyledDetailTitle>Films:</SC.StyledDetailTitle>
                     {filmTitlesMemoized.map(film => <SC.StyledFilm key={film}>{film}</SC.StyledFilm>)}

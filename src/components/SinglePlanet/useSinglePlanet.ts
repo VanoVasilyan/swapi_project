@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLazyGetSingleCharacterQuery } from '../../store/services/characters';
 import { useLazyGetSingleFilmQuery } from '../../store/services/films';
 import { ICharacter, IFilm } from '../../types/global';
@@ -25,33 +25,34 @@ export const useSinglePlanet = (films: string[], residents: string[]) => {
         return residentsData?.map((resident: { name: string }) => resident?.name)
     }, [residentsData]);
 
-    useEffect(() => {
-        const fetchFilms = async () => {
-            filmsId && await Promise.all(
-                filmsId?.map((url) => refetch({ id: url[0] }))
-            ).then((data) => {
-                const newData = [...data?.map(item => item.data)];
-                setFilmsData(newData as unknown as IFilm[]);
-            }).catch(error => console.log('Error', error));
+    const getFilmsAndResidents = async () => {
+        try {
+            if (filmsId?.length) {
+                const filmResponses = await Promise.all(
+                    filmsId.map((url) => refetch({ id: url[0] }))
+                );
+                const filmData = filmResponses.map(item => item.data);
+                setFilmsData(filmData as unknown as IFilm[]);
+            };
+            if (residentsId?.length) {
+                const residentResponses = await Promise.all(
+                    residentsId.map((url) => refetchResident({ id: url[0] }))
+                )
+                const residentData = residentResponses.map(item => item.data);
+                setResidentsData(residentData as unknown as ICharacter[]);
+            };
+        } catch (error) {
+            console.error('Error fetching data:', error);
         };
-
-        const fetchResidents = async () => {
-            residentsId && await Promise.all(
-                residentsId?.map((url) => refetchResident({ id: url[0] }))
-            ).then((data) => {
-                const newData = [...data?.map(item => item.data)];
-                setResidentsData(newData as unknown as ICharacter[]);
-            }).catch(error => console.log('Error', error));
-        };
-
-        fetchFilms();
-        fetchResidents();
-    }, [filmsId, residentsId]);
+    };
 
     return {
         isFetching,
+        filmsId,
+        residentsId,
         isResidentFetching,
         filmTitlesMemoized,
-        residentsNamesMemoized
+        residentsNamesMemoized,
+        getFilmsAndResidents,
     }
 };

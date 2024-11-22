@@ -59,3 +59,25 @@ export const StyledPlanet = styled.div``;
 export const StyledVehicle = styled.div``;
 
 export const StyledSpecies = styled.div``;
+
+export const StyledGetMoreInfoButton = styled.button<{ $isLoading: boolean }>`
+  min-width: 115.48px;
+  min-height: 38px;
+  color: #6D6AE0;
+  background-color: #F5F5F5;
+  padding: 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  outline: none;
+  border: 1px solid #6D6AE0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  pointer-events: ${({ $isLoading }) => $isLoading && 'none'};
+
+  &:hover {
+    background-color: #6D6AE0;
+    color: #F5F5F5;
+    border-color: #5A58CC;
+    box-shadow: 0 4px 8px rgba(109, 106, 224, 0.2);
+  }
+`;

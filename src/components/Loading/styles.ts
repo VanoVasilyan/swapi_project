@@ -11,7 +11,7 @@ export const StyledCircleContainer = styled.div<{ $top?: string, $left?: string,
   height: ${({ $height }) => $height ? $height : '15px'};
   ${({ $top }) => $top && css`top: ${$top}`};
   ${({ $left }) => $left && css`left: ${$left}`};
-  border:solid 2px #A9A9A9;
+  border:solid 2px #6D6AE0;
   border-radius: 50%;
   border-right-color: transparent;
   border-bottom-color: transparent;
