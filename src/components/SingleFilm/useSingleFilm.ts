@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useLazyGetSinglePlanetQuery } from '../../store/services/planets';
 import { useLazyGetSingleCharacterQuery, useLazyGetSingleSpeciesQuery, useLazyGetSingleStarshipQuery, useLazyGetSingleVehicleQuery } from '../../store/services/characters';
 import { ICharacter, IPlanet, ISpecies, IStarship, IVehicle } from '../../types/global';
@@ -60,58 +60,47 @@ export const useSingleFilm = (characters: string[], planets: string[], starships
         return speciesData?.map((speciesData: { name: string }) => speciesData?.name)
     }, [speciesData]);
 
-    useEffect(() => {
-        const fetchCharacters = async () => {
-            charactersId && await Promise.all(
-                charactersId?.map((url) => refetchResident({ id: url[0] }))
-            ).then((data) => {
-                const newData = [...data?.map(item => item.data)];
-                setCharactersData(newData as unknown as ICharacter[]);
-            }).catch(error => console.log('Error', error));
+    const getCharactersSpeciesVehiclesStarshipsAndPlanets = async () => {
+        try {
+            if (charactersId?.length) {
+                const characterResponse = await Promise.all(
+                    charactersId.map((url) => refetchResident({ id: url[0] }))
+                );
+                const characterData = characterResponse.map(item => item.data);
+                setCharactersData(characterData as unknown as ICharacter[]);
+            };
+            if (speciesId?.length) {
+                const speciesResponse = await Promise.all(
+                    speciesId.map(url => refetchSpecies({ id: url[0] }))
+                );
+                const speciesData = speciesResponse.map(item => item.data);
+                setSpeciesData(speciesData as unknown as ISpecies[]);
+            };
+            if (planetsId?.length) {
+                const planetsResponse = await Promise.all(
+                    planetsId.map(url => refetchPlanet({ id: url[0] }))
+                );
+                const planetsData = planetsResponse.map(item => item.data);
+                setPlanetsData(planetsData as unknown as IPlanet[]);
+            };
+            if (starshipsId?.length) {
+                const starshipsResponse = await Promise.all(
+                    starshipsId.map(url => refetchStarships({ id: url[0] }))
+                )
+                const starshipsData = starshipsResponse.map(item => item.data);
+                setStarshipsData(starshipsData as unknown as IStarship[]);
+            };
+            if (vehiclesId?.length) {
+                const vehiclesResponse = await Promise.all(
+                    vehiclesId.map(url => refetchVehicles({ id: url[0] }))
+                )
+                const vehiclesData = vehiclesResponse.map(item => item.data);
+                setVehiclesData(vehiclesData as unknown as IVehicle[]);
+            };
+        } catch (error) {
+            console.error('Error fetching data:', error);
         };
-
-        const fetchSpecies = async () => {
-            speciesId && await Promise.all(
-                speciesId?.map((url) => refetchSpecies({ id: url[0] }))
-            ).then((data) => {
-                const newData = [...data?.map(item => item.data)];
-                setSpeciesData(newData as unknown as ISpecies[]);
-            }).catch(error => console.log('Error', error));
-        };
-
-        const fetchVehicles = async () => {
-            vehiclesId && await Promise.all(
-                vehiclesId?.map((url) => refetchVehicles({ id: url[0] }))
-            ).then((data) => {
-                const newData = [...data?.map(item => item.data)];
-                setVehiclesData(newData as unknown as IVehicle[]);
-            }).catch(error => console.log('Error', error));
-        };
-
-        const fetchStarships = async () => {
-            starshipsId && await Promise.all(
-                starshipsId?.map((url) => refetchStarships({ id: url[0] }))
-            ).then((data) => {
-                const newData = [...data?.map(item => item.data)];
-                setStarshipsData(newData as unknown as IStarship[]);
-            }).catch(error => console.log('Error', error));
-        };
-
-        const fetchPlanets = async () => {
-            planetsId && await Promise.all(
-                planetsId?.map((url) => refetchPlanet({ id: url[0] }))
-            ).then((data) => {
-                const newData = [...data?.map(item => item.data)];
-                setPlanetsData(newData as unknown as IPlanet[]);
-            }).catch(error => console.log('Error', error));
-        };
-
-        fetchCharacters();
-        fetchSpecies();
-        fetchVehicles();
-        fetchStarships();
-        fetchPlanets();
-    }, [charactersId, speciesId, vehiclesId, starshipsId, planetsId]);
+    };
 
     return {
         showMore,
@@ -125,6 +114,7 @@ export const useSingleFilm = (characters: string[], planets: string[], starships
         planetNamesMemoized,
         starshipNamesMemoized,
         vehicleNamesMemoized,
-        speciesNamesMemoized
+        speciesNamesMemoized,
+        getCharactersSpeciesVehiclesStarshipsAndPlanets,
     }
 };
