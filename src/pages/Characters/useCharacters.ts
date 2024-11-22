@@ -26,7 +26,7 @@ export const useCharacters = () => {
 
     const eye_color = useMemo(() => {
         const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results
+        return Array.isArray(data?.results) && data?.results.length ? data?.results
             .map((character: { eye_color: string }) => character.eye_color)
             .filter((eye_color: string | number) => {
                 if (!seen[eye_color] && eye_color !== 'unknown') {
@@ -34,12 +34,12 @@ export const useCharacters = () => {
                     return true;
                 }
                 return false;
-            });
+            }) : [];
     }, [data]);
 
     const height = useMemo(() => {
         const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results
+        return Array.isArray(data?.results) && data?.results.length ? data?.results
             .map((character: { height: string }) => character.height)
             .filter((height: string | number) => {
                 if (!seen[height] && height !== 'unknown') {
@@ -47,7 +47,7 @@ export const useCharacters = () => {
                     return true;
                 }
                 return false;
-            }).sort((a: string, b: string) => Number(a) - Number(b))
+            }).sort((a: string, b: string) => Number(a) - Number(b)) : []
     }, [data]);
 
     const handleSelectChange = (check: string, title: string) => {
@@ -153,7 +153,7 @@ export const useCharacters = () => {
     };
 
     const { page, pageCount, setPage } = usePaginate(
-        data?.count ? data.count : 0,
+        data?.count || 0,
         10,
         refetch,
         true,

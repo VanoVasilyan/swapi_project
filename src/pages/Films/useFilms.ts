@@ -26,7 +26,7 @@ export const useFilms = () => {
 
     const releaseDate = useMemo(() => {
         const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results
+        return Array.isArray(data?.results) && data?.results.length ? data?.results
             .map((film: { release_date: string }) => film.release_date)
             .filter((release_date: string | number) => {
                 if (!seen[release_date] && release_date !== 'unknown') {
@@ -34,12 +34,12 @@ export const useFilms = () => {
                     return true;
                 }
                 return false;
-            }).map((release_date: string) => release_date.split('-')[0]);
+            }).map((release_date: string) => release_date.split('-')[0]) : [];
     }, [data]);
 
     const producer = useMemo(() => {
         const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results
+        return Array.isArray(data?.results) && data?.results.length ? data?.results
             .map((film: { producer: string }) => film.producer)
             .filter((producer: string | number) => {
                 if (!seen[producer] && producer !== 'unknown') {
@@ -47,7 +47,7 @@ export const useFilms = () => {
                     return true;
                 }
                 return false;
-            });
+            }) : [];
     }, [data]);
 
     const handleSelectChange = (check: string, title: string) => {
@@ -153,7 +153,7 @@ export const useFilms = () => {
     };
 
     const { page, pageCount, setPage } = usePaginate(
-        data?.count ? data.count : 0,
+        data?.count || 0,
         10,
         refetch,
         true,

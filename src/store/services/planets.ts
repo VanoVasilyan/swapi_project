@@ -16,7 +16,7 @@ export const baseQueryWrapper: BaseQueryFn<
     unknown,
     FetchBaseQueryError
 > = async (args, api, extraOptions) => {
-    const result: any = await baseQuery(args, api, extraOptions);
+    const result = await baseQuery(args, api, extraOptions);
     return result;
 };
 

@@ -3,7 +3,7 @@ import { RefObject, useEffect, useMemo, useState } from 'react';
 export const usePaginate = (
   totalCount: number,
   elementPerPage: number,
-  triggerApi: (params: any) => Promise<any>,
+  triggerApi: (params: { page: number, pageSize: number }) => Promise<any>,
   needToScrollTop: boolean,
   apiParams = {},
   initialPage = 1,

@@ -26,7 +26,7 @@ export const usePlanets = () => {
 
     const climate = useMemo(() => {
         const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results
+        return Array.isArray(data?.results) && data?.results.length ? data?.results
             .map((planet: { climate: string }) => planet.climate)
             .filter((climate: string | number) => {
                 if (!seen[climate] && climate !== 'unknown') {
@@ -34,12 +34,12 @@ export const usePlanets = () => {
                     return true;
                 }
                 return false;
-            });
+            }) : [];
     }, [data]);
 
     const gravity = useMemo(() => {
         const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results
+        return Array.isArray(data?.results) && data?.results.length ? data?.results
             .map((planet: { gravity: string }) => planet.gravity)
             .filter((gravity: string | number) => {
                 if (!seen[gravity] && gravity !== 'unknown') {
@@ -47,7 +47,7 @@ export const usePlanets = () => {
                     return true;
                 }
                 return false;
-            })
+            }) : []
     }, [data]);
 
     const handleSelectChange = (check: string, title: string) => {
@@ -155,7 +155,7 @@ export const usePlanets = () => {
     };
 
     const { page, pageCount, setPage } = usePaginate(
-        data?.count ? data.count : 0,
+        data?.count || 0,
         10,
         refetch,
         true,
