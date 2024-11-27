@@ -136,12 +136,12 @@ export const usePlanets = () => {
         return Boolean(selectedFilters.climate.length || selectedFilters.gravity.length)
     }, [selectedFilters]);
 
-    const clearAllFilters = useCallback(() => {
+    const clearAllFilters = useCallback((doRefetch: boolean = true) => {
         setSelectedFilters({
             climate: [],
             gravity: []
         });
-        refetch();
+        if (doRefetch) refetch();
     }, [refetch, setSelectedFilters]);
 
     const goBack = useCallback(() => {

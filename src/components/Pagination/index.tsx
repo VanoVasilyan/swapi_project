@@ -9,11 +9,13 @@ const Pagination: React.FC<IPaginationProps> = ({
     pagesCount,
     currentPage = 1,
     setCurrentPage,
+    clearAllFilters,
 }) => {
     const handleClick = ({ nextSelectedPage }: { nextSelectedPage?: number }): void => {
         if (nextSelectedPage || nextSelectedPage === 0) {
             setCurrentPage(nextSelectedPage + 1);
-        }
+        };
+        clearAllFilters(false);
     };
 
     return (

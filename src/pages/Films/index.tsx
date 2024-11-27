@@ -41,7 +41,7 @@ const Films: FC = () => {
                         <SC.StyledFiltersHeader>
                             <SC.StyledFilterContainerTitle><FontAwesomeIcon icon={faFilter} /> Filters</SC.StyledFilterContainerTitle>
                             {showClearFilters &&
-                                <SC.StyledClearFiltersButton onClick={clearAllFilters}>
+                                <SC.StyledClearFiltersButton onClick={() => clearAllFilters()}>
                                     <FontAwesomeIcon icon={faXmark} /> Clear filters
                                 </SC.StyledClearFiltersButton>}
                         </SC.StyledFiltersHeader>
@@ -60,6 +60,7 @@ const Films: FC = () => {
                         pagesCount={pageCount}
                         currentPage={page}
                         setCurrentPage={handlePageChange}
+                        clearAllFilters={clearAllFilters}
                     />}
             </SC.StyledFilmsContainer>
         </SC.StyledFilmPageWrapper>
