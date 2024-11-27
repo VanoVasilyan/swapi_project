@@ -134,12 +134,12 @@ export const useFilms = () => {
         return Boolean(selectedFilters.release_date.length || selectedFilters.producer.length)
     }, [selectedFilters]);
 
-    const clearAllFilters = useCallback(() => {
+    const clearAllFilters = useCallback((doRefetch: boolean = true) => {
         setSelectedFilters({
             release_date: [],
             producer: []
         });
-        refetch();
+        if (doRefetch) refetch();
     }, [refetch, setSelectedFilters]);
 
     const goBack = useCallback(() => {

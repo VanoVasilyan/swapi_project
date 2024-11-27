@@ -134,12 +134,12 @@ export const useCharacters = () => {
         return Boolean(selectedFilters.eye_color.length || selectedFilters.height.length)
     }, [selectedFilters]);
 
-    const clearAllFilters = useCallback(() => {
+    const clearAllFilters = useCallback((doRefetch: boolean = true) => {
         setSelectedFilters({
             eye_color: [],
             height: []
         });
-        refetch();
+        if(doRefetch) refetch();
     }, [refetch, setSelectedFilters]);
 
     const goBack = useCallback(() => {
