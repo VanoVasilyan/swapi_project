@@ -8,5 +8,5 @@ export type TSingleFilm = Partial<{
     planets: string[],
     starships: string[],
     vehicles: string[],
-    species: string[]
+    species: string[],
 }>;

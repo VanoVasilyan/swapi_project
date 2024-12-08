@@ -5,13 +5,13 @@ export const StyledCircleMainBlock = styled.div<{ $setMainBlockHeight?: boolean 
     ${({ $setMainBlockHeight }) => $setMainBlockHeight && css`height: 102vh;`}
 `
 
-export const StyledCircleContainer = styled.div<{ $top?: string, $left?: string, $width?: string, $height?: string }>`
+export const StyledCircleContainer = styled.div<{ $top?: string, $left?: string, $width?: string, $height?: string, $loaderColor?: string }>`
   position: absolute;
   width: ${({ $width }) => $width ? $width : '15px'};
   height: ${({ $height }) => $height ? $height : '15px'};
   ${({ $top }) => $top && css`top: ${$top}`};
   ${({ $left }) => $left && css`left: ${$left}`};
-  border:solid 2px #6D6AE0;
+  border: solid 2px ${({ $loaderColor }) => $loaderColor};
   border-radius: 50%;
   border-right-color: transparent;
   border-bottom-color: transparent;

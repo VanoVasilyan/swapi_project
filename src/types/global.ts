@@ -1,4 +1,16 @@
+import { ReactNode } from 'react';
+
 export type Nullable<T> = T | null;
+
+export interface ThemeContextType {
+    theme: Record<string, any>;
+    isDark: boolean;
+    toggleTheme: () => void;
+};
+
+export interface ThemeProviderProps {
+    children: ReactNode;
+};
 
 export interface IPlanet {
     name: string;

@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { useLocation } from 'react-router-dom';
 import { navBarLinks } from '../../data/navbarLinks';
+import Button from '../Button';
 import * as SC from './styles';
 
 const Navbar: FC = () => {
@@ -8,9 +9,7 @@ const Navbar: FC = () => {
 
     return (
         <SC.StyledNavigationBlock>
-            {navBarLinks.map(({ id, name, to }) => (
-                <SC.StyledNavLink $isActive={pathname.slice(1) === name.toLocaleLowerCase()} key={id} to={to}>{name}</SC.StyledNavLink>
-            ))}
+            {navBarLinks.map(({ id, name, to }) => <Button key={id} name={name} to={to} isActive={pathname.slice(1) === name.toLocaleLowerCase()} />)}
         </SC.StyledNavigationBlock>
     )
 };
