@@ -29,7 +29,7 @@ export const filmsApi = createApi({
                 let url = '';
 
                 if (searchValue) {
-                    url = `/films?search=${searchValue}`
+                    url = `/films/?search=${searchValue}`
                 } else if (page) {
                     url = `/films/?page=${page}`
                 } else {

@@ -1,6 +1,14 @@
 import { styled } from 'styled-components';
 
-export const StyledPagination = styled.div`
+export const StyledPagination = styled.div<{
+  $color: string,
+  $activeColor: string,
+  $activeBackground: string,
+  $hoverColor: string,
+  $hoverBackgroundColor: string,
+  $arrowColor: string,
+  $arrowHoverColor: string,
+}>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,7 +27,7 @@ export const StyledPagination = styled.div`
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: #9996BA;
+      color: ${({ $color }) => $color};
       border-radius: 4px;
       cursor: pointer;
       transition: 0.3s;
@@ -34,13 +42,13 @@ export const StyledPagination = styled.div`
       }
 
       &:hover {
-        color: #6D6AE0;
-        background-color: #F1EFFF;
+        color: ${({ $hoverColor }) => $hoverColor};
+        background-color: ${({ $hoverBackgroundColor }) => $hoverBackgroundColor};
       }
 
       &.active {
-        color: #6D6AE0;
-        background-color: #F1EFFF;
+        color: ${({ $activeColor }) => $activeColor};
+        background-color: ${({ $activeBackground }) => $activeBackground};
       }
 
       &.disable {
@@ -53,14 +61,14 @@ export const StyledPagination = styled.div`
         width: auto;
         svg {
           path {
-            fill: #A1A0AE;
+            fill: ${({ $arrowColor }) => $arrowColor};
           }
         }
         &:hover {
           background-color: transparent;
           svg {
             path {
-              fill: #6D6AE0;
+              fill: ${({ $arrowHoverColor }) => $arrowHoverColor};
             }
           }
         }
@@ -71,14 +79,14 @@ export const StyledPagination = styled.div`
 
         svg {
           path {
-            fill: #A1A0AE;
+            fill:  ${({ $arrowColor }) => $arrowColor};
           }
         }
         &:hover {
           background-color: transparent;
           svg {
             path {
-              fill: #6D6AE0;
+              fill: ${({ $arrowHoverColor }) => $arrowHoverColor};
             }
           }
         }

@@ -29,7 +29,7 @@ export const planetsApi = createApi({
                 let url = '';
 
                 if (searchValue) {
-                    url = `/planets?search=${searchValue}`
+                    url = `/planets/?search=${searchValue}`
                 } else if (page) {
                     url = `/planets/?page=${page}`
                 } else {

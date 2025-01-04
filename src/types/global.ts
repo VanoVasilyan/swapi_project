@@ -133,3 +133,8 @@ export type TBeResponseWithData<T> = {
 export type TShowFiltersAfterSearch = {
     showFilters: boolean;
 };
+
+export type TGlobalStyleProps = {
+  thumbColor: string;
+  trackColor: string;
+};

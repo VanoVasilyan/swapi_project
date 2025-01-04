@@ -11,12 +11,12 @@ export const StyledNoResultContainer = styled.div`
     transform: translate(-50%, -50%);
 `;
 
-export const StyledNoResultText = styled.p`
+export const StyledNoResultText = styled.p<{ $color: string }>`
     font-size: 40px;
-    color: #333B7E;
+    color: ${({ $color }) => $color};
 `;
 
-export const StyledGoBackButton = styled.button`
+export const StyledGoBackButton = styled.button<{ $hoverColor: string }>`
     display: flex;
     align-items: end;
     gap: 10px;
@@ -28,6 +28,6 @@ export const StyledGoBackButton = styled.button`
     cursor: pointer;
 
     &:hover {
-     color: #333B7E;
+     color: ${({ $hoverColor }) => $hoverColor};
     }
 `;

@@ -37,8 +37,34 @@ export const themes = {
             color: '#ffcc00',
         },
         noResult: {
-            color: '',
-        }
+            color: '#ffcc00',
+            goBack: {
+                hover: {
+                    color: '#ffcc00',
+                }
+            },
+        },
+        scrollBar: {
+            thumbColor: '#ffcc00',
+            trackColor: '#1F1F1F',
+        },
+        pagination: {
+            color: '#ffcc00',
+            active: {
+                color: '#F5F5F5',
+                background: '#3F3F3F',
+            },
+            hover: {
+                color: '#444444',
+                background: '#ffcc00',
+            },
+            arrow: {
+                color: '#b0b0b0',
+                hover: {
+                    color: '#FFCC00',
+                },
+            },
+        },
     },
     light: {
         mainBackground: '#FFFFFF',
@@ -77,7 +103,33 @@ export const themes = {
             color: '#6D6AE0',
         },
         noResult: {
-            color: '',
+            color: '#333B7E',
+            goBack: {
+                hover: {
+                    color: '#333B7E',
+                },
+            },
+        },
+        scrollBar: {
+            thumbColor: '#F5F5F5',
+            trackColor: '#6D6AE0',
+        },
+        pagination: {
+            color: '#9996BA',
+            active: {
+                color: '#6D6AE0',
+                background: '#F1EFFF',
+            },
+            hover: {
+                color: '#6D6AE0',
+                background: '#F1EFFF',
+            },
+            arrow: {
+                color: '#A1A0AE',
+                hover: {
+                    color: '#6D6AE0',
+                },
+            },
         },
     },
 };

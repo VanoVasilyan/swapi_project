@@ -29,7 +29,7 @@ export const charactersApi = createApi({
                 let url = '';
 
                 if (searchValue) {
-                    url = `/people?search=${searchValue}`
+                    url = `/people/?search=${searchValue}`
                 } else if (page) {
                     url = `/people/?page=${page}`
                 } else {
