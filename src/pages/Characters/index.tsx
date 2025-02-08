@@ -28,7 +28,7 @@ const Characters: FC = () => {
     } = useCharacters();
 
     if (isFetching) {
-        return <Loading $setMainBlockHeight $top='30%' $left='50%' $width='80px' $height='80px' />
+        return <Loading $setMainBlockHeight $width='80px' $height='80px' />
     };
 
     return (

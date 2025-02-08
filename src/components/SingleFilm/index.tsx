@@ -36,7 +36,7 @@ const SingleFilm: FC<TSingleFilm> = ({
 
     return (
         <SC.StyledSingleFilmContainer $bgColor={theme.card.background}>
-            <SC.StyledFilmTitle $color={theme.card.title}>{title}</SC.StyledFilmTitle>
+            <SC.StyledFilmTitle $color={theme.card.heading}>{title}</SC.StyledFilmTitle>
             {director && <SC.StyledFilmDetails $color={theme.card.text}> <SC.StyledDetailTitle $color={theme.card.title}>Director:</SC.StyledDetailTitle> {director}</SC.StyledFilmDetails>}
             {producer && <SC.StyledFilmDetails $color={theme.card.text}> <SC.StyledDetailTitle $color={theme.card.title}>Producer:</SC.StyledDetailTitle> {producer}</SC.StyledFilmDetails>}
             {releaseDate && <SC.StyledFilmDetails $color={theme.card.text}> <SC.StyledDetailTitle $color={theme.card.title}>Release Date:</SC.StyledDetailTitle> {releaseDate.split('-')[0]}</SC.StyledFilmDetails>}
