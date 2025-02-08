@@ -64,35 +64,35 @@ export const useSingleFilm = (characters: string[], planets: string[], starships
         try {
             if (charactersId?.length) {
                 const characterResponse = await Promise.all(
-                    charactersId.map((url) => refetchResident({ id: url[0] }))
+                    charactersId.map((url) => refetchResident({ id: `${url[0]}/` }))
                 );
                 const characterData = characterResponse.map(item => item.data);
                 setCharactersData(characterData as unknown as ICharacter[]);
             };
             if (speciesId?.length) {
                 const speciesResponse = await Promise.all(
-                    speciesId.map(url => refetchSpecies({ id: url[0] }))
+                    speciesId.map(url => refetchSpecies({ id: `${url[0]}/` }))
                 );
                 const speciesData = speciesResponse.map(item => item.data);
                 setSpeciesData(speciesData as unknown as ISpecies[]);
             };
             if (planetsId?.length) {
                 const planetsResponse = await Promise.all(
-                    planetsId.map(url => refetchPlanet({ id: url[0] }))
+                    planetsId.map(url => refetchPlanet({ id: `${url[0]}/` }))
                 );
                 const planetsData = planetsResponse.map(item => item.data);
                 setPlanetsData(planetsData as unknown as IPlanet[]);
             };
             if (starshipsId?.length) {
                 const starshipsResponse = await Promise.all(
-                    starshipsId.map(url => refetchStarships({ id: url[0] }))
+                    starshipsId.map(url => refetchStarships({ id: `${url[0]}/` }))
                 )
                 const starshipsData = starshipsResponse.map(item => item.data);
                 setStarshipsData(starshipsData as unknown as IStarship[]);
             };
             if (vehiclesId?.length) {
                 const vehiclesResponse = await Promise.all(
-                    vehiclesId.map(url => refetchVehicles({ id: url[0] }))
+                    vehiclesId.map(url => refetchVehicles({ id: `${url[0]}/` }))
                 )
                 const vehiclesData = vehiclesResponse.map(item => item.data);
                 setVehiclesData(vehiclesData as unknown as IVehicle[]);

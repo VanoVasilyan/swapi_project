@@ -29,14 +29,14 @@ export const useSinglePlanet = (films: string[], residents: string[]) => {
         try {
             if (filmsId?.length) {
                 const filmResponses = await Promise.all(
-                    filmsId.map((url) => refetch({ id: url[0] }))
+                    filmsId.map((url) => refetch({ id: `${url[0]}/` }))
                 );
                 const filmData = filmResponses.map(item => item.data);
                 setFilmsData(filmData as unknown as IFilm[]);
             };
             if (residentsId?.length) {
                 const residentResponses = await Promise.all(
-                    residentsId.map((url) => refetchResident({ id: url[0] }))
+                    residentsId.map((url) => refetchResident({ id: `${url[0]}/` }))
                 )
                 const residentData = residentResponses.map(item => item.data);
                 setResidentsData(residentData as unknown as ICharacter[]);

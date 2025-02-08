@@ -28,35 +28,13 @@ export const StyledCharactersInnerContainer = styled.div`
     }
 `;
 
-export const StyledFilterContainerTitle = styled.h4`
-    font-size: 20px;
-    margin: 10px 0;
-    color: #6D6AE0;
-`;
+export const StyledToggleThemeButtonWrapper = styled.div`
+    display: none;
+    position: fixed;
+    right: 8%;
+    bottom: 8%;
 
-export const StyledFilterWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    min-width: 240px;
-    gap: 10px;
-
-    @media(max-width: 365px){
-       min-width: auto;
+    @media (max-width: 600px){
+        display: block;
     }
-`;
-
-export const StyledFiltersHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
-
-export const StyledClearFiltersButton = styled.button`
-    color: red;
-    font-size: 15px;
-    font-weight: 500;
-    outline: none;
-    border: none;
-    background: none;
-    cursor: pointer;
 `;

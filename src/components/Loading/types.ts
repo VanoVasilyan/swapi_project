@@ -3,5 +3,5 @@ export type ILoading  = Partial<{
     $left: string;
     $width: string;
     $height: string;
-    $setMainBlockHeight: boolean
+    $setMainBlockHeight: boolean;
 }>;

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetAllPlanetsQuery } from '../../store/services/planets';
 import { usePlanetsAction, usePlanetsSelector } from '../../store/slices/planets';
 import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
+import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { TSinglePlanet } from '../../components/SinglePlanet/types';
@@ -12,6 +13,7 @@ export const usePlanets = () => {
     const [searchValue, setSearchValue] = useState('');
     const [planetsPage, setPlanetsPage] = useState(1);
     const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+    const { toggleTheme } = useGlobalThemeContext();
     const { data, isFetching, refetch } = useGetAllPlanetsQuery({ searchValue: debouncedSearchValue, page: planetsPage }, {
         refetchOnMountOrArgChange: true,
     });
@@ -198,6 +200,7 @@ export const usePlanets = () => {
         showClearFilters,
         searchValue,
         goBack,
+        toggleTheme,
         clearAllFilters,
         handlePageChange,
         handleSelectChange,

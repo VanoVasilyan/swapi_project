@@ -8,5 +8,5 @@ export type TSingleCharacter = Partial<{
     films: string[],
     species: string[],
     vehicles: string[],
-    starships: string[]
+    starships: string[],
 }>;

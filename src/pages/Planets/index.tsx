@@ -1,12 +1,10 @@
 import React, { FC } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import SinglePlanet from '../../components/SinglePlanet';
 import Loading from '../../components/Loading';
 import NoResult from '../../components/NoResult';
+import Button from '../../components/Button';
 import Pagination from '../../components/Pagination';
-import Filter from '../../components/Filter';
+import Filters from '../../components/Filters';
 import Header from '../../components/Header';
 import { usePlanets } from './usePlanets';
 import * as SC from './styles';
@@ -22,6 +20,7 @@ const Planets: FC = () => {
         showClearFilters,
         searchValue,
         goBack,
+        toggleTheme,
         clearAllFilters,
         handlePageChange,
         handleSelectChange,
@@ -37,16 +36,7 @@ const Planets: FC = () => {
             <Header searchvalue={searchValue} delayDebounceSearch={delayDebounceSearch} />
             <SC.StyledPlanetsContainer>
                 <SC.StyledPlanetsInnerContainer>
-                    {showFilters && <SC.StyledFilterWrapper>
-                        <SC.StyledFiltersHeader>
-                            <SC.StyledFilterContainerTitle><FontAwesomeIcon icon={faFilter} /> Filters</SC.StyledFilterContainerTitle>
-                            {showClearFilters &&
-                                <SC.StyledClearFiltersButton onClick={() => clearAllFilters()}>
-                                    <FontAwesomeIcon icon={faXmark} /> Clear filters
-                                </SC.StyledClearFiltersButton>}
-                        </SC.StyledFiltersHeader>
-                        {filterItems.map(({ id, title, items }) => (<Filter key={id} title={title} data={items} onChange={handleSelectChange} />))}
-                    </SC.StyledFilterWrapper>}
+                    {showFilters && <Filters showClearFilters={showClearFilters} clearAllFilters={clearAllFilters} handleSelectChange={handleSelectChange} filterItems={filterItems}/>}
                     <SC.StyledPlanetsPageMainBlock>
                         {Array.isArray(finalResults) && !!finalResults?.length ? (
                             finalResults.map((result, ind) => (
@@ -62,6 +52,9 @@ const Planets: FC = () => {
                         setCurrentPage={handlePageChange}
                         clearAllFilters={clearAllFilters}
                     />}
+                <SC.StyledToggleThemeButtonWrapper>
+                    <Button type='toggleTheme' onClick={toggleTheme} />
+                </SC.StyledToggleThemeButtonWrapper>
             </SC.StyledPlanetsContainer>
         </SC.StyledPlanetPageWrapper>
     )

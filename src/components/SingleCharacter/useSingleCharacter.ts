@@ -48,28 +48,28 @@ export const useSingleCharacter = (films: string[], species: string[], vehicles:
     const getFilmsSpeciesVehiclesStarships = async () => {
         if (filmsId?.length) {
             const filmResponses = await Promise.all(
-                filmsId.map((url) => refetch({ id: url[0] }))
+                filmsId.map((url) => refetch({ id: `${url[0]}/` }))
             );
             const filmData = filmResponses.map(item => item.data);
             setFilmsData(filmData as unknown as IFilm[]);
         };
         if (speciesId?.length) {
             const speciesResponse = await Promise.all(
-                speciesId.map(url => refetchSpecies({ id: url[0] }))
+                speciesId.map(url => refetchSpecies({ id: `${url[0]}/` }))
             );
             const speciesData = speciesResponse.map(item => item.data);
             setSpeciesData(speciesData as unknown as ISpecies[]);
         };
         if (vehiclesId?.length) {
             const vehiclesResponse = await Promise.all(
-                vehiclesId.map(url => refetchVehicles({ id: url[0] }))
+                vehiclesId.map(url => refetchVehicles({ id: `${url[0]}/` }))
             )
             const vehiclesData = vehiclesResponse.map(item => item.data);
             setVehiclesData(vehiclesData as unknown as IVehicle[]);
         };
         if (starshipsId?.length) {
             const starshipsResponse = await Promise.all(
-                starshipsId.map(url => refetchStarships({ id: url[0] }))
+                starshipsId.map(url => refetchStarships({ id: `${url[0]}/` }))
             )
             const starshipsData = starshipsResponse.map(item => item.data);
             setStarshipsData(starshipsData as unknown as IStarship[]);

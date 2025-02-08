@@ -1,10 +1,8 @@
 import React, { FC } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter } from '@fortawesome/free-solid-svg-icons';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import Header from '../../components/Header';
+import Filters from '../../components/Filters';
 import Loading from '../../components/Loading';
-import Filter from '../../components/Filter';
+import Button from '../../components/Button';
 import SingleCharacter from '../../components/SingleCharacter';
 import NoResult from '../../components/NoResult';
 import Pagination from '../../components/Pagination';
@@ -22,6 +20,7 @@ const Characters: FC = () => {
         showClearFilters,
         searchValue,
         goBack,
+        toggleTheme,
         clearAllFilters,
         handlePageChange,
         handleSelectChange,
@@ -37,16 +36,7 @@ const Characters: FC = () => {
             <Header searchvalue={searchValue} delayDebounceSearch={delayDebounceSearch} />
             <SC.StyledCharactersContainer>
                 <SC.StyledCharactersInnerContainer>
-                    {showFilters && <SC.StyledFilterWrapper>
-                        <SC.StyledFiltersHeader>
-                            <SC.StyledFilterContainerTitle><FontAwesomeIcon icon={faFilter} /> Filters</SC.StyledFilterContainerTitle>
-                            {showClearFilters &&
-                                <SC.StyledClearFiltersButton onClick={() => clearAllFilters()}>
-                                    <FontAwesomeIcon icon={faXmark} /> Clear filters
-                                </SC.StyledClearFiltersButton>}
-                        </SC.StyledFiltersHeader>
-                        {filterItems.map(({ id, title, items }) => (<Filter key={id} title={title} data={items} onChange={handleSelectChange} />))}
-                    </SC.StyledFilterWrapper>}
+                    {showFilters && <Filters showClearFilters={showClearFilters} clearAllFilters={clearAllFilters} handleSelectChange={handleSelectChange} filterItems={filterItems}/>}
                     <SC.StyledCharactersPageMainBlock>
                         {Array.isArray(finalResults) && !!finalResults?.length ? (
                             finalResults.map((result, ind) => (
@@ -62,6 +52,9 @@ const Characters: FC = () => {
                         setCurrentPage={handlePageChange}
                         clearAllFilters={clearAllFilters}
                     />}
+                <SC.StyledToggleThemeButtonWrapper>
+                    <Button type='toggleTheme' onClick={toggleTheme} />
+                </SC.StyledToggleThemeButtonWrapper>
             </SC.StyledCharactersContainer>
         </SC.StyledCharacterPageWrapper>
     )
