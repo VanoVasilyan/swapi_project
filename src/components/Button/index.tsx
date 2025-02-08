@@ -18,7 +18,7 @@ const Button: FC<TButton> = ({ type, onClick, isLoading, to, name, isActive }) =
                 $bgColor={theme.card.button.bgColor}
                 $isLoading={isLoading as boolean}
                 onClick={onClick}
-            >{isLoading ? <Loading $left='38px' $top='-8px' /> : 'Get More Info'}</SC.StyledGetMoreInfoButton>
+            >{isLoading ? <Loading /> : 'Get More Info'}</SC.StyledGetMoreInfoButton>
         } else if (type === 'toggleTheme') {
             return <SC.StyledToggleThemeButton
                 $isDark={isDark}
