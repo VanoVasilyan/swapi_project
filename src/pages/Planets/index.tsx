@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import SinglePlanet from '../../components/SinglePlanet';
 import Loading from '../../components/Loading';
 import NoResult from '../../components/NoResult';
+import Button from '../../components/Button';
 import Pagination from '../../components/Pagination';
 import Filters from '../../components/Filters';
 import Header from '../../components/Header';
@@ -19,6 +20,7 @@ const Planets: FC = () => {
         showClearFilters,
         searchValue,
         goBack,
+        toggleTheme,
         clearAllFilters,
         handlePageChange,
         handleSelectChange,
@@ -50,6 +52,9 @@ const Planets: FC = () => {
                         setCurrentPage={handlePageChange}
                         clearAllFilters={clearAllFilters}
                     />}
+                <SC.StyledToggleThemeButtonWrapper>
+                    <Button type='toggleTheme' onClick={toggleTheme} />
+                </SC.StyledToggleThemeButtonWrapper>
             </SC.StyledPlanetsContainer>
         </SC.StyledPlanetPageWrapper>
     )

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import Header from '../../components/Header';
 import Loading from '../../components/Loading';
 import Filters from '../../components/Filters';
+import Button from '../../components/Button';
 import NoResult from '../../components/NoResult';
 import Pagination from '../../components/Pagination';
 import SingleFilm from '../../components/SingleFilm';
@@ -19,6 +20,7 @@ const Films: FC = () => {
         showClearFilters,
         searchValue,
         goBack,
+        toggleTheme,
         clearAllFilters,
         handlePageChange,
         handleSelectChange,
@@ -50,6 +52,9 @@ const Films: FC = () => {
                         setCurrentPage={handlePageChange}
                         clearAllFilters={clearAllFilters}
                     />}
+                <SC.StyledToggleThemeButtonWrapper>
+                    <Button type='toggleTheme' onClick={toggleTheme} />
+                </SC.StyledToggleThemeButtonWrapper>
             </SC.StyledFilmsContainer>
         </SC.StyledFilmPageWrapper>
     )

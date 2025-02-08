@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetAllFilmsQuery } from '../../store/services/films';
 import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
 import { useFilmsAction, useFilmsSelector } from '../../store/slices/films';
+import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { TSingleFilm } from '../../components/SingleFilm/types';
@@ -12,6 +13,7 @@ export const useFilms = () => {
     const [searchValue, setSearchValue] = useState('');
     const [filmsPage, setFilmsPage] = useState(1);
     const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+    const { toggleTheme } = useGlobalThemeContext();
     const { data, isFetching, refetch } = useGetAllFilmsQuery({ searchValue: debouncedSearchValue, page: filmsPage }, {
         refetchOnMountOrArgChange: true,
     });
@@ -196,6 +198,7 @@ export const useFilms = () => {
         showClearFilters,
         searchValue,
         goBack,
+        toggleTheme,
         clearAllFilters,
         handlePageChange,
         handleSelectChange,

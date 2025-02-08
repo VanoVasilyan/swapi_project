@@ -31,6 +31,10 @@ export const themes = {
                     background: '#444444',
                     color: '#ffcc00',
                 }
+            },
+            toggleThemeButton: {
+                color: '#F5F5F5',
+                background: '#000000',
             }
         },
         loader: {
@@ -97,6 +101,10 @@ export const themes = {
                     background: '#F5F5F5',
                     color: '#6D6AE0',
                 },
+            },
+            toggleThemeButton: {
+                color: '#ffcc00',
+                background: '#6D6AE0',
             },
         },
         loader: {

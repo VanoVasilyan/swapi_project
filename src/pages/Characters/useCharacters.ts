@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useGetAllCharactersQuery } from '../../store/services/characters';
 import { useCharactersAction, useCharactersSelector } from '../../store/slices/characters';
+import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
@@ -12,6 +13,7 @@ export const useCharacters = () => {
     const [searchValue, setSearchValue] = useState('');
     const [charactersPage, setCharactersPage] = useState(1);
     const [debouncedSearchValue, setDebouncedSearchValue] = useState('');
+    const { toggleTheme } = useGlobalThemeContext();
     const { data, isFetching, refetch } = useGetAllCharactersQuery({ searchValue: debouncedSearchValue, page: charactersPage }, {
         refetchOnMountOrArgChange: true,
     });
@@ -196,6 +198,7 @@ export const useCharacters = () => {
         showClearFilters,
         searchValue,
         goBack,
+        toggleTheme,
         clearAllFilters,
         handlePageChange,
         handleSelectChange,

@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import Header from '../../components/Header';
 import Filters from '../../components/Filters';
 import Loading from '../../components/Loading';
+import Button from '../../components/Button';
 import SingleCharacter from '../../components/SingleCharacter';
 import NoResult from '../../components/NoResult';
 import Pagination from '../../components/Pagination';
@@ -19,6 +20,7 @@ const Characters: FC = () => {
         showClearFilters,
         searchValue,
         goBack,
+        toggleTheme,
         clearAllFilters,
         handlePageChange,
         handleSelectChange,
@@ -50,6 +52,9 @@ const Characters: FC = () => {
                         setCurrentPage={handlePageChange}
                         clearAllFilters={clearAllFilters}
                     />}
+                <SC.StyledToggleThemeButtonWrapper>
+                    <Button type='toggleTheme' onClick={toggleTheme} />
+                </SC.StyledToggleThemeButtonWrapper>
             </SC.StyledCharactersContainer>
         </SC.StyledCharacterPageWrapper>
     )

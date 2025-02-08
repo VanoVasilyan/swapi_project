@@ -27,3 +27,14 @@ export const StyledCharactersInnerContainer = styled.div`
         gap: 80px;
     }
 `;
+
+export const StyledToggleThemeButtonWrapper = styled.div`
+    display: none;
+    position: fixed;
+    right: 8%;
+    bottom: 8%;
+
+    @media (max-width: 600px){
+        display: block;
+    }
+`;

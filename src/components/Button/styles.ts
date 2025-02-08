@@ -1,5 +1,5 @@
-import styled, { css } from 'styled-components';
 import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
 
 export const StyledGetMoreInfoButton = styled.button<{ $isLoading: boolean, $color: string, $bgColor: string, $borderColor: string, $isDark: boolean }>`
   min-width: 115.48px;
@@ -56,4 +56,22 @@ export const StyledNavLink = styled(Link) <{
         border-radius: 5px; 
         font-weight: 500;
       }
+`;
+
+export const StyledToggleThemeButton = styled.button<{ $isDark: boolean, $color: string, $bgColor: string }>`
+  border: none;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 22px;
+  color:${({ $color }) => $color};
+
+  @media (max-width: 600px){
+    width: 50px;
+    height: 50px;
+    font-size: 30px;
+    padding: 0px 10px;
+    background-color: ${({ $bgColor }) => $bgColor};
+    border-radius: 50%;       
+  }
 `;

@@ -1,6 +1,6 @@
 export type TButton = Partial<{
     type: string;
-    onClick: () => Promise<void>;
+    onClick: (() => Promise<void>) | (() => void);
     isLoading: boolean;
     to: string;
     name: string;
