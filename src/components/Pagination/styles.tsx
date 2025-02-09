@@ -32,9 +32,17 @@ export const StyledPagination = styled.div<{
       cursor: pointer;
       transition: 0.3s;
 
-      @media all and (max-width: 330px) {
-        width: 29px;
+      @media all and (max-width: 375px) {
+        width: 28px;
         height: 30px;
+      }
+
+      @media all and (max-width: 320px) {
+        width: 25px;
+      }
+
+      @media all and (max-width: 300px) {
+        width: 23px;
       }
 
       a {
