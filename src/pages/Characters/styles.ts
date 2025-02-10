@@ -31,8 +31,8 @@ export const StyledCharactersInnerContainer = styled.div`
 export const StyledToggleThemeButtonWrapper = styled.div`
     display: none;
     position: fixed;
-    right: 8%;
-    bottom: 8%;
+    right: 7vw;
+    bottom: 14vh;
 
     @media (max-width: 600px){
         display: block;
