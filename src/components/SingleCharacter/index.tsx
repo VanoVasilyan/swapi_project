@@ -29,7 +29,7 @@ const SingleCharacter: FC<TSingleCharacter> = ({
         getFilmsSpeciesVehiclesStarships
     } = useSingleCharacter(films as string[], species as string[], vehicles as string[], starships as string[]);
     const { theme } = useGlobalThemeContext();
-
+    // TODO Refactor ******
     return (
         <SC.StyledSingleCharacterContainer $bgColor={theme.card.background}>
             <SC.StyledCharacterName $color={theme.card.heading}>{name}</SC.StyledCharacterName>

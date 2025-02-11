@@ -18,29 +18,28 @@ export const StyledGetMoreInfoButton = styled.button<{ $isLoading: boolean, $col
 
   &:hover {
     ${({ $isDark }) => $isDark ?
-        css`
+    css`
             background-color: #e0a800;
             color: #fff; 
             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2); 
             `
-        :
-        css`
-            background-color: #6D6AE0;
-            color: #F5F5F5;
-            border-color: #5A58CC;
-            box-shadow: 0 4px 8px rgba(109, 106, 224, 0.2);
+    :
+    css`
+            background-color: #9EABA2;
+            color: #101010;
+            box-shadow: 0 4px 8px rgba(158, 171, 162, 0.2);
             `}
   }
 `;
 
 export const StyledNavLink = styled(Link) <{
-    $isDark: boolean,
-    $isActive: boolean,
-    $color: string,
-    $bgColor: string,
-    $borderColor: string,
-    $activeColor: string,
-    $activeBackground: string
+  $isDark: boolean,
+  $isActive: boolean,
+  $color: string,
+  $bgColor: string,
+  $borderColor: string,
+  $activeColor: string,
+  $activeBackground: string
 }>`
       text-decoration: none;
       background-color: ${({ $isActive, $bgColor, $activeBackground }) => $isActive ? $activeBackground : $bgColor};

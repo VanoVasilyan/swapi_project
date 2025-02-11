@@ -28,7 +28,7 @@ const SinglePlanet: FC<TSinglePlanet> = ({
         getFilmsAndResidents,
     } = useSinglePlanet(films as string[], residents as string[]);
     const { theme } = useGlobalThemeContext();
-
+    // TODO Refactor ******
     return (
         <SC.StyledSinglePlanetContainer $bgColor={theme.card.background}>
             <SC.StyledPlanetName $color={theme.card.heading}>{name}</SC.StyledPlanetName>
