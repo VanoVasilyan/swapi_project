@@ -21,6 +21,7 @@ const Button: FC<TButton> = ({ type, onClick, isLoading, to, name, isActive }) =
             >{isLoading ? <Loading /> : 'Get More Info'}</SC.StyledGetMoreInfoButton>
         } else if (type === 'toggleTheme') {
             return <SC.StyledToggleThemeButton
+                aria-label='switcher'
                 $isDark={isDark}
                 $bgColor={theme.header.toggleThemeButton.background}
                 $color={theme.header.toggleThemeButton.color}

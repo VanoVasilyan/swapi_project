@@ -33,7 +33,7 @@ const SingleFilm: FC<TSingleFilm> = ({
         getCharactersSpeciesVehiclesStarshipsAndPlanets
     } = useSingleFilm(characters as string[], planets as string[], starships as string[], vehicles as string[], species as string[]);
     const { theme } = useGlobalThemeContext();
-
+    // TODO Refactor ******
     return (
         <SC.StyledSingleFilmContainer $bgColor={theme.card.background}>
             <SC.StyledFilmTitle $color={theme.card.heading}>{title}</SC.StyledFilmTitle>

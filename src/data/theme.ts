@@ -78,64 +78,65 @@ export const themes = {
             title: '#000',
             text: '#666',
             button: {
-                color: '#6D6AE0',
-                bgColor: '#F5F5F5',
+                color: '#FFFFFF',
+                bgColor: '#101010',
+                borderColor: '#ffffff00',
             },
             showMore: {
-                color: '#6D6AE0',
+                color: '#101010',
             },
         },
         filter: {
-            mainTitle: '#6D6AE0',
+            mainTitle: '#101010',
             subTitle: '#333333',
             text: '#333333',
             background: '#FFFFFF',
         },
         header: {
-            background: '#6D6AE0',
+            background: '#9EABA2',
             navBarLinks: {
-                color: '#FFFFFF',
-                background: '#a9a9a9',
+                color: '#101010',
+                background: '#FFFFFF',
                 borderColor: '#ffffff00',
                 active: {
-                    background: '#F5F5F5',
-                    color: '#6D6AE0',
+                    background: '#101010',
+                    color: '#FFFFFF',
                 },
             },
             toggleThemeButton: {
                 color: '#ffcc00',
-                background: '#6D6AE0',
+                background: '#9EABA2',
             },
         },
         loader: {
-            color: '#6D6AE0',
+            color: '#9EABA2',
         },
         noResult: {
-            color: '#333B7E',
+            color: '#101010',
             goBack: {
                 hover: {
-                    color: '#333B7E',
+                    color: '#101010',
                 },
             },
         },
         scrollBar: {
             thumbColor: '#F5F5F5',
-            trackColor: '#6D6AE0',
+            trackColor: '#9EABA2',
         },
         pagination: {
-            color: '#9996BA',
+            color: '#101010',
             active: {
-                color: '#6D6AE0',
-                background: '#F1EFFF',
+                color: '#FFFFFF',
+                background: '#9EABA2',
             },
             hover: {
-                color: '#6D6AE0',
-                background: '#F1EFFF',
+                color: '#FFFFFF',
+                background: '#9EABA2',
             },
             arrow: {
                 color: '#A1A0AE',
                 hover: {
-                    color: '#6D6AE0',
+                    color: '#9EABA2',
                 },
             },
         },
