@@ -5,7 +5,7 @@ import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices
 import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
-import { TSinglePlanet } from '../../components/SinglePlanet/types';
+import { TSinglePlanetProps } from '../../types/planets';
 import { IPlanet } from '../../types/global';
 import { TFilters } from './types';
 
@@ -131,7 +131,7 @@ export const usePlanets = () => {
             population: result.population,
             residents: result.residents,
             films: result.films
-        })).map(removeObjectEmptyProperties).filter((item) => Object.keys(item).length > 1 && (item.climate || item.gravity)) as TSinglePlanet[]
+        })).map(removeObjectEmptyProperties).filter((item) => Object.keys(item).length > 1 && (item.climate || item.gravity)) as TSinglePlanetProps[]
     }, [results]);
 
     const showClearFilters = useMemo(() => {
