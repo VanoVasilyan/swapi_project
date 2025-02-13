@@ -8,13 +8,14 @@ export const usePaginate = (
   apiParams = {},
   initialPage = 1,
   needToScrollTopElement: RefObject<HTMLElement> | null = null,
-  requestInChangePage = false
+  requestInChangePage = false,
+  withoutLastPage = false,
 ) => {
   const [page, setStatePage] = useState(initialPage);
 
   const pageCount = useMemo(() => {
-    return Math.ceil(totalCount / elementPerPage);
-  }, [totalCount, elementPerPage]);
+    return Math.ceil(totalCount / elementPerPage) - (withoutLastPage ? 1 : 0);
+  }, [totalCount, elementPerPage, withoutLastPage]);
 
   useEffect(() => {
     if (!requestInChangePage) {
