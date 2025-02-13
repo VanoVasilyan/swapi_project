@@ -162,7 +162,10 @@ export const usePlanets = () => {
         refetch,
         true,
         {},
-        planetsPage
+        planetsPage,
+        null,
+        false,
+        true
     );
 
     const handlePageChange = useCallback((page: number) => {
@@ -185,10 +188,12 @@ export const usePlanets = () => {
     useEffect(() => {
         if (data && Array.isArray(data.results) && !data.results.length) {
             setShowFilters(false);
+        } else if (Array.isArray(finalResults) && !finalResults.length && searchValue) {
+            setShowFilters(false);
         } else {
             setShowFilters(true);
         }
-    }, [data?.results]);
+    }, [data?.results, finalResults]);
 
     return {
         page,
