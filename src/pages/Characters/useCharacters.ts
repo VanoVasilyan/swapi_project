@@ -5,7 +5,7 @@ import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
-import { TSingleCharacter } from '../../components/SingleCharacter/types';
+import { TSingleCharacterProps } from '../../types/characters';
 import { ICharacter } from '../../types/global';
 import { TFilters } from './types';
 
@@ -129,7 +129,7 @@ export const useCharacters = () => {
             species: result.species,
             vehicles: result.vehicles,
             starships: result.starships
-        })).map(removeObjectEmptyProperties).filter(item => Object.keys(item).length > 1 && (item.eye_color || item.height)) as TSingleCharacter[]
+        })).map(removeObjectEmptyProperties).filter(item => Object.keys(item).length > 1 && (item.eye_color || item.height)) as TSingleCharacterProps[]
     }, [results]);
 
     const showClearFilters = useMemo(() => {

@@ -6,3 +6,16 @@ export type TCharactersData = {
     previous: Nullable<string>;
     results: Nullable<ICharacter[]> | ICharacter;
 };
+
+export type TSingleCharacterProps = Partial<{
+    name: string,
+    height: string,
+    mass: string,
+    hairColor: string,
+    skinColor: string,
+    eyeColor: string,
+    films: string[],
+    species: string[],
+    vehicles: string[],
+    starships: string[],
+}>;

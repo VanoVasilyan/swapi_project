@@ -135,6 +135,13 @@ export type TShowFiltersAfterSearch = {
 };
 
 export type TGlobalStyleProps = {
-  thumbColor: string;
-  trackColor: string;
+    thumbColor: string;
+    trackColor: string;
+};
+
+export type TransformedCardDetails = {
+    id: number;
+    key: string;
+    title: string;
+    value: string | string[];
 };

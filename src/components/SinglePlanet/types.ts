@@ -1,7 +1,7 @@
-import { TransformedSinglePlanet } from '../../types/planets';
+import { TransformedCardDetails } from './../../types/global';
 
 export type TSinglePlanet = {
     films?: string[];
     residents?: string[];
-    planetDetails: TransformedSinglePlanet[];
+    planetDetails: TransformedCardDetails[];
 };

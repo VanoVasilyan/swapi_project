@@ -6,9 +6,9 @@ import { TSinglePlanet } from './types';
 import * as SC from './styles';
 
 const SinglePlanet: FC<TSinglePlanet> = ({
-    planetDetails,
     films,
     residents,
+    planetDetails,
 }) => {
     const {
         filmsId,

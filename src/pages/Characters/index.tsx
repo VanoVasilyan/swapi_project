@@ -6,6 +6,7 @@ import Button from '../../components/Button';
 import SingleCharacter from '../../components/SingleCharacter';
 import NoResult from '../../components/NoResult';
 import Pagination from '../../components/Pagination';
+import { createArrayOfObjectsFromProperties } from '../../utils/createArrayOfObjectsFromProperties';
 import { useCharacters } from './useCharacters';
 import * as SC from './styles';
 
@@ -36,11 +37,18 @@ const Characters: FC = () => {
             <Header searchvalue={searchValue} delayDebounceSearch={delayDebounceSearch} />
             <SC.StyledCharactersContainer>
                 <SC.StyledCharactersInnerContainer>
-                    {showFilters && <Filters showClearFilters={showClearFilters} clearAllFilters={clearAllFilters} handleSelectChange={handleSelectChange} filterItems={filterItems}/>}
+                    {showFilters && <Filters showClearFilters={showClearFilters} clearAllFilters={clearAllFilters} handleSelectChange={handleSelectChange} filterItems={filterItems} />}
                     <SC.StyledCharactersPageMainBlock>
                         {Array.isArray(finalResults) && !!finalResults?.length ? (
                             finalResults.map((result, ind) => (
-                                <SingleCharacter key={ind} {...result} />
+                                <SingleCharacter
+                                    key={ind}
+                                    films={result.films}
+                                    species={result.species}
+                                    vehicles={result.vehicles}
+                                    starships={result.starships}
+                                    characterDetails={createArrayOfObjectsFromProperties(result)}
+                                />
                             ))
                         ) : <NoResult text={`Nothing found${!showFilters ? '.' : ', please change filters.'}`} goBack={!showFilters ? goBack : null} />}
                     </SC.StyledCharactersPageMainBlock>

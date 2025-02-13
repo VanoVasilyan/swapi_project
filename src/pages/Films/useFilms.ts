@@ -5,7 +5,7 @@ import { useFilmsAction, useFilmsSelector } from '../../store/slices/films';
 import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
-import { TSingleFilm } from '../../components/SingleFilm/types';
+import { TSingleFilmProps } from './../../types/films';
 import { IFilm } from '../../types/global';
 import { TFilters } from './types';
 
@@ -129,7 +129,7 @@ export const useFilms = () => {
             starships: result.starships,
             vehicles: result.vehicles,
             species: result.species,
-        })).map(removeObjectEmptyProperties).filter(item => Object.keys(item).length > 1 && (item.release_date || item.producer)) as TSingleFilm[]
+        })).map(removeObjectEmptyProperties).filter(item => Object.keys(item).length > 1 && (item.release_date || item.producer)) as TSingleFilmProps[]
     }, [results]);
 
     const showClearFilters = useMemo(() => {
