@@ -4,6 +4,7 @@ import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices
 import { useFilmsAction, useFilmsSelector } from '../../store/slices/films';
 import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
+import { useMemoCustom } from '../../hooks/useMemoCustom';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { TSingleFilmProps } from './../../types/films';
 import { IFilm } from '../../types/global';
@@ -25,32 +26,8 @@ export const useFilms = () => {
         release_date: [],
         producer: []
     });
-
-    const releaseDate = useMemo(() => {
-        const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results.length ? data?.results
-            .map((film: { release_date: string }) => film.release_date)
-            .filter((release_date: string | number) => {
-                if (!seen[release_date] && release_date !== 'unknown') {
-                    seen[release_date] = true;
-                    return true;
-                }
-                return false;
-            }).map((release_date: string) => release_date.split('-')[0]) : [];
-    }, [data]);
-
-    const producer = useMemo(() => {
-        const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results.length ? data?.results
-            .map((film: { producer: string }) => film.producer)
-            .filter((producer: string | number) => {
-                if (!seen[producer] && producer !== 'unknown') {
-                    seen[producer] = true;
-                    return true;
-                }
-                return false;
-            }) : [];
-    }, [data]);
+    const releaseDate = useMemoCustom(data!, 'release_date', (release_date: string) => release_date.split('-')[0], 'map');
+    const producer = useMemoCustom(data!, 'producer');
 
     const handleSelectChange = (check: string, title: string) => {
         const titleToLowerCase = title.toLocaleLowerCase();

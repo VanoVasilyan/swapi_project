@@ -48,7 +48,7 @@ const Films: FC = () => {
                                     starships={result.starships}
                                     vehicles={result.vehicles}
                                     species={result.species}
-                                    filmDetails={createArrayOfObjectsFromProperties(result)}
+                                    filmDetails={createArrayOfObjectsFromProperties({...result, releaseDate: result?.releaseDate?.split('-')[0]})}
                                 />
                             ))
                         ) : <NoResult text={`Nothing found${!showFilters ? '.' : ', please change filters.'}`} goBack={!showFilters ? goBack : null} />}
