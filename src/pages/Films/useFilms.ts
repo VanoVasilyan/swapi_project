@@ -6,6 +6,7 @@ import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
 import { useMemoCustom } from '../../hooks/useMemoCustom';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
+import { useFilterItems } from '../../hooks/useFilterItems';
 import { TSingleFilmProps } from './../../types/films';
 import { IFilm } from '../../types/global';
 import { TFilters } from './types';
@@ -28,6 +29,7 @@ export const useFilms = () => {
     });
     const releaseDate = useMemoCustom(data!, 'release_date', (release_date: string) => release_date.split('-')[0], 'map');
     const producer = useMemoCustom(data!, 'producer');
+    const filterItems = useFilterItems([releaseDate, producer], 'Release_Date', 'Producer');
 
     const handleSelectChange = (check: string, title: string) => {
         const titleToLowerCase = title.toLocaleLowerCase();
@@ -80,19 +82,6 @@ export const useFilms = () => {
         }
         setFilms(filteredArray);
     }, [data?.results, selectedFilters, setFilms]);
-
-    const filterItems = useMemo(() => ([
-        {
-            id: 1,
-            title: 'Release_Date',
-            items: releaseDate
-        },
-        {
-            id: 2,
-            title: 'Producer',
-            items: producer
-        },
-    ]), [releaseDate, producer]);
 
     const finalResults = useMemo(() => {
         return Array.isArray(results) && results.map(result => ({

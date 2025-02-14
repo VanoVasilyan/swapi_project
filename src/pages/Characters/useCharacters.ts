@@ -6,6 +6,7 @@ import { usePaginate } from '../../hooks/usePaginate';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
 import { useMemoCustom } from '../../hooks/useMemoCustom';
+import { useFilterItems } from '../../hooks/useFilterItems';
 import { TSingleCharacterProps } from '../../types/characters';
 import { ICharacter } from '../../types/global';
 import { TFilters } from './types';
@@ -28,6 +29,7 @@ export const useCharacters = () => {
     });
     const eye_color = useMemoCustom(data!, 'eye_color');
     const height = useMemoCustom(data!, 'height', (a, b) => Number(a) - Number(b), 'sort');
+    const filterItems = useFilterItems([eye_color, height], 'Eye_Color', 'Height');
 
     const handleSelectChange = (check: string, title: string) => {
         const titleToLowerCase = title.toLocaleLowerCase();
@@ -80,19 +82,6 @@ export const useCharacters = () => {
         }
         setCharacters(filteredArray);
     }, [data?.results, selectedFilters, setCharacters]);
-
-    const filterItems = useMemo(() => ([
-        {
-            id: 1,
-            title: 'Eye_Color',
-            items: eye_color
-        },
-        {
-            id: 2,
-            title: 'Height',
-            items: height
-        },
-    ]), [eye_color, height]);
 
     const finalResults = useMemo(() => {
         return Array.isArray(results) && results.map(result => ({

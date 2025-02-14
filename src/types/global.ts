@@ -145,3 +145,9 @@ export type TransformedCardDetails = {
     title: string;
     value: string | string[];
 };
+
+export type TFilterItem = {
+    id: number;
+    title: string;
+    items: string[];
+};

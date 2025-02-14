@@ -6,6 +6,7 @@ import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
 import { useMemoCustom } from '../../hooks/useMemoCustom';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
+import { useFilterItems } from '../../hooks/useFilterItems';
 import { TSinglePlanetProps } from '../../types/planets';
 import { IPlanet } from '../../types/global';
 import { TFilters } from './types';
@@ -28,6 +29,7 @@ export const usePlanets = () => {
     });
     const climate = useMemoCustom(data!, 'climate');
     const gravity = useMemoCustom(data!, 'gravity');
+    const filterItems = useFilterItems([climate, gravity], 'Climate', 'Gravity');
 
     const handleSelectChange = (check: string, title: string) => {
         const titleToLowerCase = title.toLocaleLowerCase();
@@ -80,20 +82,6 @@ export const usePlanets = () => {
         }
         setPlanets(filteredArray);
     }, [data?.results, selectedFilters, setPlanets]);
-
-
-    const filterItems = useMemo(() => ([
-        {
-            id: 1,
-            title: 'Climate',
-            items: climate
-        },
-        {
-            id: 2,
-            title: 'Gravity',
-            items: gravity
-        },
-    ]), [climate, gravity]);
 
     const finalResults = useMemo(() => {
         return Array.isArray(results) && results.map((result) => ({
