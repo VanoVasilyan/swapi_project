@@ -1,8 +1,4 @@
-export type TFilterItem = {
-    id: number;
-    title: string;
-    items: string[];
-};
+import { TFilterItem } from '../../types/global';
 
 export interface IFilters {
     showClearFilters: boolean;

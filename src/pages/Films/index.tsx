@@ -6,6 +6,7 @@ import Button from '../../components/Button';
 import NoResult from '../../components/NoResult';
 import Pagination from '../../components/Pagination';
 import SingleFilm from '../../components/SingleFilm';
+import { createArrayOfObjectsFromProperties } from '../../utils/createArrayOfObjectsFromProperties';
 import { useFilms } from './useFilms';
 import * as SC from './styles';
 
@@ -36,11 +37,19 @@ const Films: FC = () => {
             <Header searchvalue={searchValue} delayDebounceSearch={delayDebounceSearch} />
             <SC.StyledFilmsContainer>
                 <SC.StyledFilmsInnerContainer>
-                    {showFilters && <Filters showClearFilters={showClearFilters} clearAllFilters={clearAllFilters} handleSelectChange={handleSelectChange} filterItems={filterItems}/>}
+                    {showFilters && <Filters showClearFilters={showClearFilters} clearAllFilters={clearAllFilters} handleSelectChange={handleSelectChange} filterItems={filterItems} />}
                     <SC.StyledFilmsPageMainBlock>
                         {Array.isArray(finalResults) && !!finalResults?.length ? (
                             finalResults.map((result, ind) => (
-                                <SingleFilm key={ind} {...result} />
+                                <SingleFilm
+                                    key={ind}
+                                    characters={result.characters}
+                                    planets={result.planets}
+                                    starships={result.starships}
+                                    vehicles={result.vehicles}
+                                    species={result.species}
+                                    filmDetails={createArrayOfObjectsFromProperties({...result, releaseDate: result?.releaseDate?.split('-')[0]})}
+                                />
                             ))
                         ) : <NoResult text={`Nothing found${!showFilters ? '.' : ', please change filters.'}`} goBack={!showFilters ? goBack : null} />}
                     </SC.StyledFilmsPageMainBlock>

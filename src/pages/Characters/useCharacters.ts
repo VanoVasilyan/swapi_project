@@ -5,7 +5,9 @@ import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
-import { TSingleCharacter } from '../../components/SingleCharacter/types';
+import { useMemoCustom } from '../../hooks/useMemoCustom';
+import { useFilterItems } from '../../hooks/useFilterItems';
+import { TSingleCharacterProps } from '../../types/characters';
 import { ICharacter } from '../../types/global';
 import { TFilters } from './types';
 
@@ -25,32 +27,9 @@ export const useCharacters = () => {
         eye_color: [],
         height: []
     });
-
-    const eye_color = useMemo(() => {
-        const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results.length ? data?.results
-            .map((character: { eye_color: string }) => character.eye_color)
-            .filter((eye_color: string | number) => {
-                if (!seen[eye_color] && eye_color !== 'unknown') {
-                    seen[eye_color] = true;
-                    return true;
-                }
-                return false;
-            }) : [];
-    }, [data]);
-
-    const height = useMemo(() => {
-        const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results.length ? data?.results
-            .map((character: { height: string }) => character.height)
-            .filter((height: string | number) => {
-                if (!seen[height] && height !== 'unknown') {
-                    seen[height] = true;
-                    return true;
-                }
-                return false;
-            }).sort((a: string, b: string) => Number(a) - Number(b)) : []
-    }, [data]);
+    const eye_color = useMemoCustom(data!, 'eye_color');
+    const height = useMemoCustom(data!, 'height', (a, b) => Number(a) - Number(b), 'sort');
+    const filterItems = useFilterItems([eye_color, height], 'Eye_Color', 'Height');
 
     const handleSelectChange = (check: string, title: string) => {
         const titleToLowerCase = title.toLocaleLowerCase();
@@ -104,19 +83,6 @@ export const useCharacters = () => {
         setCharacters(filteredArray);
     }, [data?.results, selectedFilters, setCharacters]);
 
-    const filterItems = useMemo(() => ([
-        {
-            id: 1,
-            title: 'Eye_Color',
-            items: eye_color
-        },
-        {
-            id: 2,
-            title: 'Height',
-            items: height
-        },
-    ]), [eye_color, height]);
-
     const finalResults = useMemo(() => {
         return Array.isArray(results) && results.map(result => ({
             name: result.name,
@@ -129,7 +95,7 @@ export const useCharacters = () => {
             species: result.species,
             vehicles: result.vehicles,
             starships: result.starships
-        })).map(removeObjectEmptyProperties).filter(item => Object.keys(item).length > 1 && (item.eye_color || item.height)) as TSingleCharacter[]
+        })).map(removeObjectEmptyProperties).filter(item => Object.keys(item).length > 1 && (item.eye_color || item.height)) as TSingleCharacterProps[]
     }, [results]);
 
     const showClearFilters = useMemo(() => {

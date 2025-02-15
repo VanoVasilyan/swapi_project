@@ -6,16 +6,12 @@ import { TSingleFilm } from './types';
 import * as SC from './styles';
 
 const SingleFilm: FC<TSingleFilm> = ({
-    title,
-    openingCrawl,
-    director,
-    producer,
-    releaseDate,
     characters,
     planets,
     starships,
     vehicles,
     species,
+    filmDetails,
 }) => {
     const {
         showMore,
@@ -33,18 +29,26 @@ const SingleFilm: FC<TSingleFilm> = ({
         getCharactersSpeciesVehiclesStarshipsAndPlanets
     } = useSingleFilm(characters as string[], planets as string[], starships as string[], vehicles as string[], species as string[]);
     const { theme } = useGlobalThemeContext();
-    // TODO Refactor ******
+
     return (
         <SC.StyledSingleFilmContainer $bgColor={theme.card.background}>
-            <SC.StyledFilmTitle $color={theme.card.heading}>{title}</SC.StyledFilmTitle>
-            {director && <SC.StyledFilmDetails $color={theme.card.text}> <SC.StyledDetailTitle $color={theme.card.title}>Director:</SC.StyledDetailTitle> {director}</SC.StyledFilmDetails>}
-            {producer && <SC.StyledFilmDetails $color={theme.card.text}> <SC.StyledDetailTitle $color={theme.card.title}>Producer:</SC.StyledDetailTitle> {producer}</SC.StyledFilmDetails>}
-            {releaseDate && <SC.StyledFilmDetails $color={theme.card.text}> <SC.StyledDetailTitle $color={theme.card.title}>Release Date:</SC.StyledDetailTitle> {releaseDate.split('-')[0]}</SC.StyledFilmDetails>}
-            {openingCrawl &&
-                <SC.StyledFilmDetailsOpeningCrawl $showMore={showMore}>
-                    <SC.StyledDetailTitle $color={theme.card.title}>Opening Crawl: <SC.StyledShowMoreButton $color={theme.card.showMore.color} onClick={handleShowMore}>{`show ${showMore ? 'less' : 'more'}`}</SC.StyledShowMoreButton></SC.StyledDetailTitle>
-                    <SC.StyledFilmDetails $color={theme.card.text}>{openingCrawl}</SC.StyledFilmDetails>
-                </SC.StyledFilmDetailsOpeningCrawl>}
+            {filmDetails.map(detail => {
+                if (detail.key === 'title') {
+                    return <SC.StyledFilmTitle key={detail.id} $color={theme.card.heading}>{detail.value}</SC.StyledFilmTitle>
+                } else if (detail.key === 'openingCrawl') {
+                    return (
+                        <SC.StyledFilmDetailsOpeningCrawl key={detail.id} $showMore={showMore}>
+                            <SC.StyledDetailTitle $color={theme.card.title}>{detail.title} <SC.StyledShowMoreButton $color={theme.card.showMore.color} onClick={handleShowMore}>{`show ${showMore ? 'less' : 'more'}`}</SC.StyledShowMoreButton></SC.StyledDetailTitle>
+                            <SC.StyledFilmDetails $color={theme.card.text}>{detail.value}</SC.StyledFilmDetails>
+                        </SC.StyledFilmDetailsOpeningCrawl>
+                    )
+                }
+                return (
+                    <SC.StyledFilmDetails key={detail.id} $color={theme.card.text}>
+                        <SC.StyledDetailTitle $color={theme.card.title}>{detail.title}</SC.StyledDetailTitle> {detail.value}
+                    </SC.StyledFilmDetails>
+                )
+            })}
             {(!characterNamesMemoized.length && !speciesNamesMemoized.length && !planetNamesMemoized.length && !starshipNamesMemoized.length && !vehicleNamesMemoized.length) &&
                 <Button
                     type='getMoreInfo'

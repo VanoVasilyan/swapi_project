@@ -1,13 +1,7 @@
-export type TSinglePlanet = Partial<{
-    name: string,
-    rotationPeriod: string,
-    diameter: string,
-    orbitalPeriod: string,
-    gravity: string,
-    climate: string,
-    surfaceWater: string,
-    terrain: string,
-    residents: string[],
-    films: string[],
-    population: string,
-}>;
+import { TransformedCardDetails } from './../../types/global';
+
+export type TSinglePlanet = {
+    films?: string[];
+    residents?: string[];
+    planetDetails: TransformedCardDetails[];
+};

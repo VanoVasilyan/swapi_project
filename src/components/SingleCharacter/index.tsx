@@ -6,16 +6,11 @@ import { TSingleCharacter } from './types';
 import * as SC from './styles';
 
 const SingleCharacter: FC<TSingleCharacter> = ({
-    name,
-    height,
-    mass,
-    hairColor,
-    skinColor,
-    eyeColor,
     films,
     species,
     vehicles,
     starships,
+    characterDetails,
 }) => {
     const {
         isFetching,
@@ -29,15 +24,19 @@ const SingleCharacter: FC<TSingleCharacter> = ({
         getFilmsSpeciesVehiclesStarships
     } = useSingleCharacter(films as string[], species as string[], vehicles as string[], starships as string[]);
     const { theme } = useGlobalThemeContext();
-    // TODO Refactor ******
+
     return (
         <SC.StyledSingleCharacterContainer $bgColor={theme.card.background}>
-            <SC.StyledCharacterName $color={theme.card.heading}>{name}</SC.StyledCharacterName>
-            {height && <SC.StyledCharacterDetails $color={theme.card.text}> <SC.StyledDetailTitle $color={theme.card.title}>Height:</SC.StyledDetailTitle> {height} sm</SC.StyledCharacterDetails>}
-            {mass && <SC.StyledCharacterDetails $color={theme.card.text}><SC.StyledDetailTitle $color={theme.card.title}>Mass:</SC.StyledDetailTitle> {mass}</SC.StyledCharacterDetails>}
-            {hairColor && <SC.StyledCharacterDetails $color={theme.card.text}><SC.StyledDetailTitle $color={theme.card.title}>Hair Color:</SC.StyledDetailTitle> {hairColor}</SC.StyledCharacterDetails>}
-            {skinColor && <SC.StyledCharacterDetails $color={theme.card.text}><SC.StyledDetailTitle $color={theme.card.title}>Skin Color:</SC.StyledDetailTitle> {skinColor}</SC.StyledCharacterDetails>}
-            {eyeColor && <SC.StyledCharacterDetails $color={theme.card.text}><SC.StyledDetailTitle $color={theme.card.title}>Eye Color:</SC.StyledDetailTitle> {eyeColor}</SC.StyledCharacterDetails>}
+            {characterDetails.map(detail => {
+                if (detail.key === 'name') {
+                    return <SC.StyledCharacterName key={detail.id} $color={theme.card.heading}>{detail.value}</SC.StyledCharacterName>
+                }
+                return (
+                    <SC.StyledCharacterDetails key={detail.id} $color={theme.card.text}>
+                        <SC.StyledDetailTitle $color={theme.card.title}>{detail.title}</SC.StyledDetailTitle> {detail.value}
+                    </SC.StyledCharacterDetails>
+                )
+            })}
             {(!filmTitlesMemoized.length && !speciesNamesMemoized.length && !starshipNamesMemoized.length && !vehicleNamesMemoized.length) &&
                 <Button
                     type='getMoreInfo'

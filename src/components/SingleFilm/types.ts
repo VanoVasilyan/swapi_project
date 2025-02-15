@@ -1,12 +1,11 @@
-export type TSingleFilm = Partial<{
-    title: string,
-    openingCrawl: string,
-    director: string,
-    producer: string,
-    releaseDate: string,
-    characters: string[],
-    planets: string[],
-    starships: string[],
-    vehicles: string[],
-    species: string[],
-}>;
+
+import { TransformedCardDetails } from '../../types/global';
+
+export type TSingleFilm = {
+    characters?: string[];
+    planets?: string[];
+    starships?: string[];
+    vehicles?: string[];
+    species?: string[];
+    filmDetails: TransformedCardDetails[];
+};

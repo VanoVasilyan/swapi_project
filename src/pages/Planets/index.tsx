@@ -6,6 +6,7 @@ import Button from '../../components/Button';
 import Pagination from '../../components/Pagination';
 import Filters from '../../components/Filters';
 import Header from '../../components/Header';
+import { createArrayOfObjectsFromProperties } from '../../utils/createArrayOfObjectsFromProperties';
 import { usePlanets } from './usePlanets';
 import * as SC from './styles';
 
@@ -36,11 +37,11 @@ const Planets: FC = () => {
             <Header searchvalue={searchValue} delayDebounceSearch={delayDebounceSearch} />
             <SC.StyledPlanetsContainer>
                 <SC.StyledPlanetsInnerContainer>
-                    {showFilters && <Filters showClearFilters={showClearFilters} clearAllFilters={clearAllFilters} handleSelectChange={handleSelectChange} filterItems={filterItems}/>}
+                    {showFilters && <Filters showClearFilters={showClearFilters} clearAllFilters={clearAllFilters} handleSelectChange={handleSelectChange} filterItems={filterItems} />}
                     <SC.StyledPlanetsPageMainBlock>
                         {Array.isArray(finalResults) && !!finalResults?.length ? (
                             finalResults.map((result, ind) => (
-                                <SinglePlanet key={ind} {...result} />
+                                <SinglePlanet key={ind} films={result.films} residents={result.residents} planetDetails={createArrayOfObjectsFromProperties(result)} />
                             ))
                         ) : <NoResult text={`Nothing found${!showFilters ? '.' : ', please change filters.'}`} goBack={!showFilters ? goBack : null} />}
                     </SC.StyledPlanetsPageMainBlock>

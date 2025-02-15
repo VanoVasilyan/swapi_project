@@ -4,8 +4,10 @@ import { usePlanetsAction, usePlanetsSelector } from '../../store/slices/planets
 import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
 import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
+import { useMemoCustom } from '../../hooks/useMemoCustom';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
-import { TSinglePlanet } from '../../components/SinglePlanet/types';
+import { useFilterItems } from '../../hooks/useFilterItems';
+import { TSinglePlanetProps } from '../../types/planets';
 import { IPlanet } from '../../types/global';
 import { TFilters } from './types';
 
@@ -25,32 +27,9 @@ export const usePlanets = () => {
         climate: [],
         gravity: []
     });
-
-    const climate = useMemo(() => {
-        const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results.length ? data?.results
-            .map((planet: { climate: string }) => planet.climate)
-            .filter((climate: string | number) => {
-                if (!seen[climate] && climate !== 'unknown') {
-                    seen[climate] = true;
-                    return true;
-                }
-                return false;
-            }) : [];
-    }, [data]);
-
-    const gravity = useMemo(() => {
-        const seen: Record<string, boolean> = {};
-        return Array.isArray(data?.results) && data?.results.length ? data?.results
-            .map((planet: { gravity: string }) => planet.gravity)
-            .filter((gravity: string | number) => {
-                if (!seen[gravity] && gravity !== 'unknown') {
-                    seen[gravity] = true;
-                    return true;
-                }
-                return false;
-            }) : []
-    }, [data]);
+    const climate = useMemoCustom(data!, 'climate');
+    const gravity = useMemoCustom(data!, 'gravity');
+    const filterItems = useFilterItems([climate, gravity], 'Climate', 'Gravity');
 
     const handleSelectChange = (check: string, title: string) => {
         const titleToLowerCase = title.toLocaleLowerCase();
@@ -104,20 +83,6 @@ export const usePlanets = () => {
         setPlanets(filteredArray);
     }, [data?.results, selectedFilters, setPlanets]);
 
-
-    const filterItems = useMemo(() => ([
-        {
-            id: 1,
-            title: 'Climate',
-            items: climate
-        },
-        {
-            id: 2,
-            title: 'Gravity',
-            items: gravity
-        },
-    ]), [climate, gravity]);
-
     const finalResults = useMemo(() => {
         return Array.isArray(results) && results.map((result) => ({
             name: result.name,
@@ -131,7 +96,7 @@ export const usePlanets = () => {
             population: result.population,
             residents: result.residents,
             films: result.films
-        })).map(removeObjectEmptyProperties).filter((item) => Object.keys(item).length > 1 && (item.climate || item.gravity)) as TSinglePlanet[]
+        })).map(removeObjectEmptyProperties).filter((item) => Object.keys(item).length > 1 && (item.climate || item.gravity)) as TSinglePlanetProps[]
     }, [results]);
 
     const showClearFilters = useMemo(() => {

@@ -6,17 +6,9 @@ import { TSinglePlanet } from './types';
 import * as SC from './styles';
 
 const SinglePlanet: FC<TSinglePlanet> = ({
-    name,
-    rotationPeriod,
-    diameter,
-    orbitalPeriod,
-    gravity,
-    climate,
-    surfaceWater,
-    terrain,
-    residents,
     films,
-    population,
+    residents,
+    planetDetails,
 }) => {
     const {
         filmsId,
@@ -28,18 +20,23 @@ const SinglePlanet: FC<TSinglePlanet> = ({
         getFilmsAndResidents,
     } = useSinglePlanet(films as string[], residents as string[]);
     const { theme } = useGlobalThemeContext();
-    // TODO Refactor ******
+
     return (
         <SC.StyledSinglePlanetContainer $bgColor={theme.card.background}>
-            <SC.StyledPlanetName $color={theme.card.heading}>{name}</SC.StyledPlanetName>
-            {rotationPeriod && <SC.StyledPlanetDetails $color={theme.card.text}> <SC.StyledDetailTitle $color={theme.card.title}>Rotation Period:</SC.StyledDetailTitle> {rotationPeriod} hours</SC.StyledPlanetDetails>}
-            {orbitalPeriod && <SC.StyledPlanetDetails $color={theme.card.text}><SC.StyledDetailTitle $color={theme.card.title}>Orbital Period:</SC.StyledDetailTitle> {orbitalPeriod} days</SC.StyledPlanetDetails>}
-            {diameter && <SC.StyledPlanetDetails $color={theme.card.text}><SC.StyledDetailTitle $color={theme.card.title}>Diameter:</SC.StyledDetailTitle> {diameter} km</SC.StyledPlanetDetails>}
-            {climate && <SC.StyledPlanetDetails $color={theme.card.text}><SC.StyledDetailTitle $color={theme.card.title}>Climate:</SC.StyledDetailTitle> {climate}</SC.StyledPlanetDetails>}
-            {gravity && <SC.StyledPlanetDetails $color={theme.card.text}><SC.StyledDetailTitle $color={theme.card.title}>Gravity:</SC.StyledDetailTitle> {gravity}</SC.StyledPlanetDetails>}
-            {terrain && <SC.StyledPlanetDetails $color={theme.card.text}><SC.StyledDetailTitle $color={theme.card.title}>Terrain:</SC.StyledDetailTitle> {terrain}</SC.StyledPlanetDetails>}
-            {surfaceWater && <SC.StyledPlanetDetails $color={theme.card.text}><SC.StyledDetailTitle $color={theme.card.title}>Surface Water:</SC.StyledDetailTitle> {surfaceWater}%</SC.StyledPlanetDetails>}
-            {population && <SC.StyledPlanetDetails $color={theme.card.text}><SC.StyledDetailTitle $color={theme.card.title}>Population:</SC.StyledDetailTitle> {population}</SC.StyledPlanetDetails>}
+            {planetDetails.map((detail) => {
+                if (detail.key === 'name') {
+                    return (
+                        <SC.StyledPlanetName key={detail.id} $color={theme.card.heading}>
+                            {detail.value}
+                        </SC.StyledPlanetName>
+                    )
+                }
+                return (
+                    <SC.StyledPlanetDetails key={detail.id} $color={theme.card.text}>
+                        <SC.StyledDetailTitle $color={theme.card.title}>{detail.title}</SC.StyledDetailTitle> {detail.value}
+                    </SC.StyledPlanetDetails>
+                )
+            })}
             {(!filmTitlesMemoized.length && !residentsNamesMemoized.length && (filmsId?.length || residentsId?.length)) &&
                 <Button
                     type='getMoreInfo'
