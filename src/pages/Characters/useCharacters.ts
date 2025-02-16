@@ -5,7 +5,8 @@ import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
-import { useMemoCustom } from '../../hooks/useMemoCustom';
+import { useDistinctPropValues } from '../../hooks/useDistinctPropValues';
+import { useHandleSelectChange } from '../../hooks/useHandleSelectChange';
 import { useFilterItems } from '../../hooks/useFilterItems';
 import { TSingleCharacterProps } from '../../types/characters';
 import { ICharacter } from '../../types/global';
@@ -27,20 +28,10 @@ export const useCharacters = () => {
         eye_color: [],
         height: []
     });
-    const eye_color = useMemoCustom(data!, 'eye_color');
-    const height = useMemoCustom(data!, 'height', (a, b) => Number(a) - Number(b), 'sort');
+    const eye_color = useDistinctPropValues(data!, 'eye_color');
+    const height = useDistinctPropValues(data!, 'height', (a, b) => Number(a) - Number(b), 'sort');
     const filterItems = useFilterItems([eye_color, height], 'Eye_Color', 'Height');
-
-    const handleSelectChange = (check: string, title: string) => {
-        const titleToLowerCase = title.toLocaleLowerCase();
-
-        if (selectedFilters[titleToLowerCase as keyof TFilters].includes(check)) {
-            const filteredCheckList = selectedFilters[titleToLowerCase as keyof TFilters].filter(item => item !== check);
-            setSelectedFilters(prev => ({ ...prev, [titleToLowerCase]: filteredCheckList }))
-        } else {
-            setSelectedFilters(prev => ({ ...prev, [titleToLowerCase]: [...selectedFilters[titleToLowerCase as keyof TFilters], check] }))
-        }
-    };
+    const handleSelectChange = useHandleSelectChange(setSelectedFilters);
 
     const updateFilters = useCallback(() => {
         const filteredArray: ICharacter[] = [];

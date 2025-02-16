@@ -151,3 +151,5 @@ export type TFilterItem = {
     title: string;
     items: string[];
 };
+
+export type TFilterState = Record<string, string[]>;

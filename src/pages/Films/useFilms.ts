@@ -4,7 +4,8 @@ import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices
 import { useFilmsAction, useFilmsSelector } from '../../store/slices/films';
 import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
-import { useMemoCustom } from '../../hooks/useMemoCustom';
+import { useDistinctPropValues } from '../../hooks/useDistinctPropValues';
+import { useHandleSelectChange } from '../../hooks/useHandleSelectChange';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { useFilterItems } from '../../hooks/useFilterItems';
 import { TSingleFilmProps } from './../../types/films';
@@ -27,20 +28,10 @@ export const useFilms = () => {
         release_date: [],
         producer: []
     });
-    const releaseDate = useMemoCustom(data!, 'release_date', (release_date: string) => release_date.split('-')[0], 'map');
-    const producer = useMemoCustom(data!, 'producer');
+    const releaseDate = useDistinctPropValues(data!, 'release_date', (release_date: string) => release_date.split('-')[0], 'map');
+    const producer = useDistinctPropValues(data!, 'producer');
     const filterItems = useFilterItems([releaseDate, producer], 'Release_Date', 'Producer');
-
-    const handleSelectChange = (check: string, title: string) => {
-        const titleToLowerCase = title.toLocaleLowerCase();
-
-        if (selectedFilters[titleToLowerCase as keyof TFilters].includes(check)) {
-            const filteredCheckList = selectedFilters[titleToLowerCase as keyof TFilters].filter(item => item !== check);
-            setSelectedFilters(prev => ({ ...prev, [titleToLowerCase]: filteredCheckList }))
-        } else {
-            setSelectedFilters(prev => ({ ...prev, [titleToLowerCase]: [...selectedFilters[titleToLowerCase as keyof TFilters], check] }))
-        }
-    };
+    const handleSelectChange = useHandleSelectChange(setSelectedFilters);
 
     const updateFilters = useCallback(() => {
         const filteredArray: IFilm[] = [];

@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { TBeResponseWithData } from '../types/global';
 
-export const useMemoCustom = <T,>(
+export const useDistinctPropValues = <T,>(
     data: TBeResponseWithData<T>,
     prop: keyof T,
     helperAfterFilter?: ((value: string) => string) | ((a: string, b: string) => number),
