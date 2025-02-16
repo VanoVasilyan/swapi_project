@@ -4,7 +4,8 @@ import { usePlanetsAction, usePlanetsSelector } from '../../store/slices/planets
 import { useShowFiltersAction, useShowFiltersSelector } from '../../store/slices/filters';
 import { useGlobalThemeContext } from '../../context/theme';
 import { usePaginate } from '../../hooks/usePaginate';
-import { useMemoCustom } from '../../hooks/useMemoCustom';
+import { useDistinctPropValues } from '../../hooks/useDistinctPropValues';
+import { useHandleSelectChange } from '../../hooks/useHandleSelectChange';
 import { removeObjectEmptyProperties } from '../../utils/removeObjectEmptyProperties';
 import { useFilterItems } from '../../hooks/useFilterItems';
 import { TSinglePlanetProps } from '../../types/planets';
@@ -27,20 +28,10 @@ export const usePlanets = () => {
         climate: [],
         gravity: []
     });
-    const climate = useMemoCustom(data!, 'climate');
-    const gravity = useMemoCustom(data!, 'gravity');
+    const climate = useDistinctPropValues(data!, 'climate');
+    const gravity = useDistinctPropValues(data!, 'gravity');
     const filterItems = useFilterItems([climate, gravity], 'Climate', 'Gravity');
-
-    const handleSelectChange = (check: string, title: string) => {
-        const titleToLowerCase = title.toLocaleLowerCase();
-
-        if (selectedFilters[titleToLowerCase as keyof TFilters].includes(check)) {
-            const filteredCheckList = selectedFilters[titleToLowerCase as keyof TFilters].filter(item => item !== check);
-            setSelectedFilters(prev => ({ ...prev, [titleToLowerCase]: filteredCheckList }))
-        } else {
-            setSelectedFilters(prev => ({ ...prev, [titleToLowerCase]: [...selectedFilters[titleToLowerCase as keyof TFilters], check] }))
-        }
-    };
+    const handleSelectChange = useHandleSelectChange(setSelectedFilters);
 
     const updateFilters = useCallback(() => {
         const filteredArray: IPlanet[] = [];
